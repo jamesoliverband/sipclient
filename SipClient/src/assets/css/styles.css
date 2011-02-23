@@ -1,0 +1,101 @@
+/* CSS file */
+@namespace mx "library://ns.adobe.com/flex/mx";
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace view "com.genius.view.*";
+
+
+s|WindowedApplication
+{
+	background-alpha: 0;
+	color:#000000;
+}
+
+
+/*************************************************ustom Components
+********************************************************/
+
+view|MainWindowView
+{
+	corner-radius: 6;
+	skin-class: ClassReference("com.genius.view.TitleWindowMainViewSkin");
+	title-bar-background-color: #ffffff;
+	border-alpha: 0;
+/*	border-color: #6d6d6d;*/
+	border-thickness: 2;
+	border-alpha: 1;
+	background-color: #f6f6f6;
+	font-family: Arial, sans-serif;
+	font-lookup: auto;
+}
+
+
+view|MainWindowView #titleDisplay
+{
+	left: 54;
+	font-size: 17;
+	font-style: italic;
+	padding-top: 4;
+	font-family: Arial, sans-serif;
+	font-lookup: auto;
+	color: #222222;
+}
+
+s|Button {
+	skin-class: ClassReference("com.genius.view.ui.skin.SipButton");
+	font-size: 12;
+	font-style: normal;
+	font-weight:bold;
+	font-family: Arial, sans-serif;
+	font-lookup: auto;
+}
+.errorMsg
+{
+	font-size: 11;
+	color:red;
+	font-family: Arial, sans-serif; 
+	font-lookup: auto;
+/*	font-weight:bold;*/
+}
+
+.infoMsg
+{
+	font-size: 10;
+	color:#ffffff;
+	font-weight:bold;
+}
+
+
+.smsTitle
+{
+	font-family: Arial, sans-serif;
+	font-lookup: auto;
+	font-weight: bold;
+	color: #000000;
+	text-align: center;
+}
+
+.grayClose, .minimizeButton
+{
+	skin-class: ClassReference("com.genius.view.SmallButtonSkin");
+	chrome-color: #ffffff;	
+	corner-radius: 4;
+	zoomIn: true;
+}
+
+.grayClose
+{
+	zoomIn: false;
+	zoomOut: false;
+	grayClose: true;
+	background-alpha: 0;
+}
+
+.minimizeButton
+{
+	zoomIn: false;
+	zoomOut: false;
+	grayClose: false;
+	minimize: true;
+	background-alpha: 0;
+}
+

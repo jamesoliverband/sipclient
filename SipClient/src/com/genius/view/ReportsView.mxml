@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					 >
+	
+	<!-- This class uses the Employee.as class included in the same samples folder -->
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.Batch;
+			import com.genius.model.SQLQueries;
+			import com.genius.model.Student;
+			
+			import mx.collections.ArrayCollection;
+			import mx.formatters.DateFormatter;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+
+			[Bindable]
+			protected var eligibleStudents:ArrayCollection;
+
+			[Bindable]
+			protected var selectedStudents:ArrayCollection;
+
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			
+			
+
+			
+			// Initialize the database and create table
+			protected function initDatabase():void
+			{
+				selectedStudents = new ArrayCollection();				
+			}
+			
+			protected function onAddBtnClick(event:MouseEvent):void
+			{
+				var batch:Batch = new Batch();
+				batch.teachername = cmbTeacher.selectedLabel;
+				batch.coursename = cmbCourse.selectedLabel;
+				batch.startdate = txtStartDate.text;
+				batch.enddate = txtEndDate.text;
+				batch.days = days.text;
+				batch.time = time.text;
+				batch.runningstatus = "Y"
+				DataManager.addNewBatch(batch);
+				model.batchList = DataManager.getActiveBatchList();
+				resetForm();
+			}
+			
+			protected function resetForm():void {
+				cmbCourse.selectedIndex = 0;
+				cmbTeacher.selectedIndex = 0;
+				txtStartDate.text = "";
+				txtEndDate.text = "";
+				days.text=""
+				time.text="";
+				model.selectedBatch = null;
+			}
+			
+			protected function onEditBatchBtnClick(event:MouseEvent):void
+			{
+				//deleteStudent(dg.selectedItem as Student);
+				//Alert.show("Edit Click - To Do" + dg.selectedItem.id + "" + dg.selectedItem.coursename);
+				//txtTeacherName.text = dg.selectedItem.teachername;
+				//txtTeacherId.text = dg.selectedItem.id;
+				//btnAddTeacher.label = "Save"
+				//DataManager.updateCourse(id, coursename)
+			}
+			
+			protected function onMarkCompleteClick(event:MouseEvent):void
+			{
+				//deleteStudent(dg.selectedItem as Student);
+				//Alert.show("Edit Click - To Do" + dg.selectedItem.id + "" + dg.selectedItem.coursename);
+				//txtTeacherName.text = dg.selectedItem.teachername;
+				//txtTeacherId.text = dg.selectedItem.id;
+				//btnAddTeacher.label = "Save"
+				//DataManager.updateCourse(id, coursename)
+				DataManager.markBatchComplete(dg.selectedItem.id);
+				model.batchList = DataManager.getActiveBatchList();
+			}
+			
+			protected function onAddStudentClick(event:MouseEvent):void {
+				model.selectedBatch = DataManager.getBatch(dg.selectedItem.id);
+				this.batchViewStack.selectedIndex = 1;
+			}
+			
+			protected function onSearchBtnClick(event:MouseEvent):void
+			{
+				var student:Student = new Student();
+				student.firstname = txtFirstName.text;
+				student.lastname = txtLastName.text;
+				student.level = cmbCourse1.selectedLabel;
+				eligibleStudents = DataManager.searchStudents(student);
+			}
+			
+			protected function onMoveRightClick(event:MouseEvent):void
+			{
+				var selectedStudentIndex:int = eligibleList.selectedIndex;
+				if(selectedStudents == null ) {
+					selectedStudents = new ArrayCollection();
+				}
+				selectedStudents.addItem(eligibleStudents.getItemAt(selectedStudentIndex));
+				
+			}
+			
+			protected function onMoveLeftClick(event:MouseEvent):void
+			{
+				
+			}
+			
+			protected function onAddStudentToBatch(event:MouseEvent):void
+			{
+				//DataManager.addStudentToBatch(model.selectedBatch.id, 
+				
+			}
+			
+
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<mx:ViewStack id="batchViewStack">
+		<s:NavigatorContent>
+			<s:VGroup width="476" height="387">
+				<s:Group x="106" y="44" width="379" height="239">
+					<s:Label x="10" y="10" text="Add New Batch" fontWeight="bold"/>
+					<mx:Form x="0" y="30">
+						<mx:FormItem label="Level:">
+							<mx:ComboBox id="cmbCourse"  dataProvider="{model.courseList}" labelField="coursename" > 
+							</mx:ComboBox>
+						</mx:FormItem>
+						<mx:FormItem label="Teacher:">
+							<mx:ComboBox id="cmbTeacher"  dataProvider="{model.teacherList}" labelField="teachername" > 
+							</mx:ComboBox>
+						</mx:FormItem>
+						<mx:FormItem label="Days">
+							<s:TextInput id="days"/>
+						</mx:FormItem>
+						<mx:FormItem label="Time">
+							<s:TextInput id="time"/>
+						</mx:FormItem>
+						<mx:FormItem label="Start Date:">
+							<mx:DateField id="txtStartDate" width="158" yearNavigationEnabled="true" formatString="DD-MM-YYYY"/>
+						</mx:FormItem>
+						<mx:FormItem label="End Date:">
+							<mx:DateField id="txtEndDate" width="158"  yearNavigationEnabled="true" formatString="DD-MM-YYYY"/>
+						</mx:FormItem>
+						<mx:FormItem>
+							<s:Button label="Add Batch" click="onAddBtnClick(event)"/>
+						</mx:FormItem>
+					</mx:Form>  	
+				</s:Group>
+				<mx:DataGrid id="dg" dataProvider="{model.batchList}" width="456" rowCount="10" height="191">
+					<mx:columns>
+						<mx:DataGridColumn dataField="id" headerText="Batch ID"/>
+						<mx:DataGridColumn dataField="teachername" headerText="Teacher Name" />
+						<mx:DataGridColumn dataField="coursename" headerText="Course" />
+					</mx:columns>
+				</mx:DataGrid>
+				<s:HGroup left="10">
+					<s:Button  label="Edit Batch" click="onEditBatchBtnClick(event)" enabled="{dg.selectedIndex > -1}"/>
+					<s:Button  label="Mark Complete" click="onMarkCompleteClick(event)" enabled="{dg.selectedIndex > -1}"/>
+					<s:Button  label="Add Student" click="onAddStudentClick(event)" enabled="{dg.selectedIndex > -1}"/>
+				</s:HGroup>
+			</s:VGroup>
+		</s:NavigatorContent>
+		<s:NavigatorContent>
+			<s:Group>
+				
+					<s:layout>
+						<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+					</s:layout>
+					<s:VGroup width="501" height="476">
+						
+						<s:HGroup><s:Label text="BatchId" /><s:Label text="{model.selectedBatch.id}" /></s:HGroup>
+						<s:HGroup><s:Label text="Teacher" /><s:Label text="{model.selectedBatch.teachername}" /></s:HGroup>
+						<s:Group x="106" y="44" width="379" height="185">
+							<s:Label x="10" y="10" text="Search Student" fontFamily="Arial" fontWeight="bold"/>
+							<mx:Form x="0" y="30">
+								<mx:FormItem label="First Name:">
+									<s:TextInput id="txtFirstName"/>
+								</mx:FormItem>
+								<mx:FormItem label="Last Name:">
+									<s:TextInput id="txtLastName"/>
+								</mx:FormItem>
+								<mx:FormItem label="Level:">
+									<mx:ComboBox id="cmbCourse1"  dataProvider="{model.courseList}" labelField="coursename" > 
+									</mx:ComboBox>
+								</mx:FormItem>
+								<mx:FormItem>
+									<s:Button label="Search" click="onSearchBtnClick(event)"/>
+								</mx:FormItem>
+							</mx:Form>  	
+						</s:Group>
+						<s:HGroup>
+							<s:List id="eligibleList" dataProvider="{eligibleStudents}" labelField="firstname">
+								
+							</s:List>
+							<s:VGroup>
+								<s:Button label=">>" click="onMoveRightClick(event)"/>
+								<s:Button label="--" click="onMoveLeftClick(event)"/>
+							</s:VGroup>
+							
+							<s:List id="selectedList" dataProvider="{selectedStudents}" labelField="firstname">
+									
+							</s:List>
+							</s:HGroup>
+						<s:Button left="10" label="Add Selected Students"  enabled="{dg.selectedIndex > -1}" click="onAddStudentToBatch(event)"/>
+					</s:VGroup>	
+					
+			</s:Group>
+		</s:NavigatorContent>
+	</mx:ViewStack>
+</s:Group>

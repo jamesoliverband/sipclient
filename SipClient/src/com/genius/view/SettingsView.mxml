@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					xmlns:samples="samples.*"
+					 width="100%" height="100%" xmlns:view="com.genius.view.*">
+	
+	<!-- This class uses the Employee.as class included in the same samples folder -->
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<mx:TabNavigator width="100%" height="100%">
+		<s:NavigatorContent label="Manage Course" width="100%" height="100%">
+			<view:ManageCourse />				
+		</s:NavigatorContent>
+		<s:NavigatorContent label="Manage Teacher" width="100%" height="100%">
+			<view:ManageTeacher />
+		</s:NavigatorContent>
+		<s:NavigatorContent label="Planning Board" width="100%" height="100%">
+			<view:PlanningBoard />
+		</s:NavigatorContent>
+		<s:NavigatorContent label="Manage Expense" width="100%" height="100%">
+			<view:ManageExpenses />
+		</s:NavigatorContent>
+		
+	</mx:TabNavigator>
+</s:Group>
