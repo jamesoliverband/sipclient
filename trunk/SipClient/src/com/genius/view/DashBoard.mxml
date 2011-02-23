@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					label="Dash Board" xmlns:samples="samples.*" 
+					 width="100%" height="100%" xmlns:view="com.genius.view.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.DashBoardStat;
+			
+			[Bindable]
+			private var dashBoardStackIndex:int = 0;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			private function onHomeClick():void {
+				model.dashBoardStat.refreshDashBoradData();
+				dashBoardStackIndex = 0;			
+			}
+			
+			private function onAddStudentClick():void {
+				dashBoardStackIndex = 1;	
+			}
+			
+			private function onAddBatchClick():void {
+				dashBoardStackIndex = 4;	
+			}
+			
+			private function onSearchClick():void {
+				dashBoardStackIndex = 2;
+			}
+			
+			private function onReportsClick():void {
+				dashBoardStackIndex = 5;
+			}
+			
+			private function onSettingsClick():void {
+				dashBoardStackIndex = 3;
+			}
+
+			
+			  
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:HGroup width="100%" height="100%">
+		<s:BorderContainer width="120" height="100%" backgroundColor="#797248">
+			<s:VGroup width="120" height="100%" horizontalAlign="center" paddingTop="20">
+					<s:Button label="Home" height="50" width="100" click="onHomeClick()" />
+					<s:Button label="Add Student" height="50" width="100" click="onAddStudentClick()"/>
+					<s:Button label="Add Batch" height="50" width="100" click="onAddBatchClick()"/>
+					<s:Button label="Search" height="50" width="100" click="onSearchClick()"/>
+					<s:Button label="Reports" height="50" width="100" click="onReportsClick()"/>
+					<s:Button label="Settings" height="50" width="100" click="onSettingsClick()"/>
+			</s:VGroup>
+		</s:BorderContainer>
+		<mx:ViewStack x="120" id="dashBoardStack" selectedIndex="{dashBoardStackIndex}" >
+			<s:NavigatorContent>
+				<view:DashBoardMainView />
+			</s:NavigatorContent>
+			<s:NavigatorContent>
+				<view:AddNewStudent />
+			</s:NavigatorContent>
+			<s:NavigatorContent>
+				<view:SearchStudent />
+			</s:NavigatorContent>
+			<s:NavigatorContent>
+				<view:SettingsView />
+			</s:NavigatorContent>
+			<s:NavigatorContent>
+				<view:ManageBatch />
+			</s:NavigatorContent>
+			<s:NavigatorContent>
+				<view:ReportsView />
+			</s:NavigatorContent>
+
+		</mx:ViewStack>
+	</s:HGroup>
+</s:NavigatorContent>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					>
+	
+	<!-- This class uses the Employee.as class included in the same samples folder -->
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.SQLQueries;
+			import com.genius.model.Student;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.formatters.DateFormatter;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			// Initialize the database and create table
+			protected function initDatabase():void
+			{
+				// Create a file to hold the database
+				var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+				sipDb = new SQLConnection();
+				sipDb.open(dbFile);
+				
+			}
+			
+			protected function onAddBtnClick(event:MouseEvent):void
+			{
+				if(txtFirstName.text== "" || txtLastName.text == ""
+					|| txtDob.text == "" || txtEnrolDate.text == "" || txtContact1.text == "") {
+					
+					Alert.show("Please enter valid data for all required fields. ");
+					return;
+				}
+				var student:Student = new Student();
+				student.firstname = txtFirstName.text;
+				student.lastname = txtLastName.text;
+				student.dob = txtDob.text;
+				student.enrolldate = txtEnrolDate.text;
+				student.level = cmbLevel.selectedLabel
+				student.contactnumber1 = txtContact1.text;
+				student.contactnumber2 = txtContact2.text;
+				student.contactnumber3 = txtContact3.text;
+				student.schoolname = txtSchoolName.text;
+				student.middlename = txtMiddleName.text;
+				DataManager.addStudent(student);
+				
+				var monthObj:Object = model.monthList.getItemAt(txtEnrolDate.selectedDate.month);
+				DataManager.addMonthlyCount(monthObj.name,""+ txtEnrolDate.selectedDate.fullYear, student.level);
+				model.monthlyCounts = DataManager.getMonthCounts();
+				
+				resetForm();
+			}
+			
+			public function resetForm():void {
+				txtFirstName.text = "";
+				txtLastName.text="";
+				txtDob.text= "";
+				txtEnrolDate.text= "";
+				cmbLevel.selectedIndex = 0;
+				txtContact1.text= "";
+				txtContact2.text= "";
+				txtContact3.text= "";
+				txtSchoolName.text= "";
+				txtMiddleName.text= "";
+			}
+
+			
+	
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<s:VGroup width="476" height="387">
+		<s:Group x="106" y="44" width="379" height="366">
+			<s:Label x="10" y="10" text="Add Student" fontWeight="bold"/>
+			<mx:Form x="0" y="30">
+				<mx:FormItem label="First Name:">
+					<s:TextInput id="txtFirstName"/>
+				</mx:FormItem>
+				<mx:FormItem label="Middle Name:">
+					<s:TextInput id="txtMiddleName" />
+				</mx:FormItem>
+				<mx:FormItem label="Last Name:">
+					<s:TextInput id="txtLastName"/>
+				</mx:FormItem>
+				<mx:FormItem label="Date of Birth:">
+					<mx:DateField id="txtDob" width="158" yearNavigationEnabled="true" formatString="DD-MM-YYYY"/>
+				</mx:FormItem>
+				<mx:FormItem label="Enrollment Date:">
+					<mx:DateField id="txtEnrolDate" width="158"  yearNavigationEnabled="true" formatString="DD-MM-YYYY"/>
+				</mx:FormItem>
+				<mx:FormItem label="Level:">
+					<mx:ComboBox id="cmbLevel"  dataProvider="{model.courseList}" labelField="coursename" > 
+					</mx:ComboBox>
+				</mx:FormItem>
+				<mx:FormItem label="School:">
+					<s:TextInput id="txtSchoolName"/>
+				</mx:FormItem>
+				<mx:FormItem label="Contact Number 1 :">
+					<s:TextInput id="txtContact1" restrict="0-9" maxChars="10"/>
+				</mx:FormItem>
+				<mx:FormItem label="Contact Number 2 :">
+					<s:TextInput id="txtContact2" restrict="0-9" maxChars="10"/>
+				</mx:FormItem>
+				<mx:FormItem label="Contact Number 3 :">
+					<s:TextInput id="txtContact3" restrict="0-9" maxChars="10"/>
+				</mx:FormItem>
+				<mx:FormItem>
+					<s:Button label="Add Student" click="onAddBtnClick(event)"/>
+				</mx:FormItem>
+			</mx:Form>  	
+		</s:Group>
+	</s:VGroup>
+</s:Group>

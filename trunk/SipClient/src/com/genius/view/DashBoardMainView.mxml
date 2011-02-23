@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="600" height="474"
+		 
+		 >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.genius.model.Student;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.SQLQueries;
+			
+			import mx.collections.ArrayCollection;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var bdayStudents:ArrayCollection;
+			
+			[Bindable]
+			protected var activeStudents:ArrayCollection;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+
+			[Bindable]
+			public var countList:ArrayCollection = new ArrayCollection([
+				{Month:"Jan", count:2, amalCount:2, leve1Count:4},
+				{Month:"Feb", count:4, amalCount:1, leve1Count:4},
+				{Month:"Mar", count:6, amalCount:5, leve1Count:4},
+				{Month:"Apr", count:8, amalCount:2, leve1Count:4},
+				{Month:"May", count:10, amalCount:7, leve1Count:4},
+				{Month:"Jun", count:12, amalCount:2, leve1Count:4},
+				{Month:"Jul", count:14, amalCount:9, leve1Count:4},
+				{Month:"Aug", count:16, amalCount:2, leve1Count:4},
+				{Month:"Sep", count:18, amalCount:3, leve1Count:4}
+
+			]);
+
+			// Initialize the database and create table
+			protected function initDatabase():void
+			{
+				// Create a file to hold the database
+				var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+				sipDb = new SQLConnection();
+				sipDb.open(dbFile);
+				//DataManager.getCurrentMonthBirdays();
+				//DataManager.getStudentLevelCount();
+			}
+			
+			protected function getCurrentMonthBirdays(){
+				// Retrieve students with a Select all call
+				var stmt:SQLStatement = new SQLStatement();
+				stmt.itemClass = Student;
+				stmt.sqlConnection = sipDb;
+				var d:Date = new Date();
+				var month = d.month;
+				month = month + 1;
+				var monthStr = month+"";
+				if(month < 10 ) {
+					monthStr = "0" + monthStr;
+				}
+
+				stmt.text = SQLQueries.S_STUDENT_CUR_MONTH_BDAY_1 + monthStr + SQLQueries.S_STUDENT_CUR_MONTH_BDAY_2;
+				stmt.execute();
+				bdayStudents = new ArrayCollection(stmt.getResult().data);
+				if(bdayStudents!=null) {
+					trace(bdayStudents.length);
+				}
+				//bgrid.e
+			}
+			
+			protected function getStudentLevelCount(){
+				// Retrieve students with a Select all call
+				var stmt:SQLStatement = new SQLStatement();
+				//stmt.itemClass = Student;
+				stmt.sqlConnection = sipDb;
+				var d:Date = new Date();
+				var month = d.month;
+				month = month + 1;
+				var monthStr = month+"";
+				if(month < 10 ) {
+					monthStr = "0" + monthStr;
+				}
+				stmt.text = "SELECT count(level) as studentcount, level from students group by level";
+				stmt.execute();
+				activeStudents = new ArrayCollection(stmt.getResult().data);
+				if(activeStudents!=null) {
+					trace(activeStudents.length);
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:HGroup width="600" height="441" y="23">
+		
+			
+		<s:VGroup x="10" y="10">
+			<s:Panel cornerRadius="5"  width="320" height="209" title="Students - Level Wise breakup">
+				<s:layout>
+					<s:VerticalLayout >
+					</s:VerticalLayout>
+				</s:layout>
+				<s:HGroup>
+				<mx:PieChart id="studentLevelPieChart" height="164" width="206"  
+							  dataProvider="{model.dashBoardStat.studentLevelData}"  dataTipItemsSet="true" >
+				<mx:series>
+					<mx:PieSeries 
+						field="studentcount" 
+						nameField="level" 
+						labelPosition="inside"
+						/>
+				</mx:series>
+				</mx:PieChart>
+				<mx:Legend dataProvider="{studentLevelPieChart}"  />
+				</s:HGroup>
+			</s:Panel>
+			<s:Panel cornerRadius="5" title="Birthdays This Month" width="320" height="184">
+				<mx:DataGrid  id="bgrid" width="298" rowCount="5" dataProvider="{model.dashBoardStat.currentMonthBdayStudents}" height="128">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Name"  dataField="firstname"/>
+						<mx:DataGridColumn headerText="Current Level"  dataField="level" />
+						<mx:DataGridColumn headerText="DOB"  dataField="dob"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</s:Panel>			
+		</s:VGroup>
+		<s:VGroup x="250" y="10">
+			<s:Panel cornerRadius="5"  width="320" height="200" title="Batches Summary">
+				<s:layout>
+					<s:VerticalLayout >
+					</s:VerticalLayout>
+				</s:layout>
+				<mx:DataGrid paddingLeft="5" paddingTop="5" id="batchSummary" width="310" rowCount="5" dataProvider="{model.batchList}" height="150">
+					<mx:columns>
+						<mx:DataGridColumn dataField="id" headerText="Batch ID"/>
+						<mx:DataGridColumn dataField="teachername" headerText="Teacher Name" />
+						<mx:DataGridColumn dataField="coursename" headerText="Course" />
+						<mx:DataGridColumn dataField="count" headerText="Students" />
+					</mx:columns>
+				</mx:DataGrid>
+			</s:Panel>
+			
+			<!--<s:Panel cornerRadius="5"  width="320" height="200" title="Overall Counts">
+					<s:layout>
+						<s:VerticalLayout >
+						</s:VerticalLayout>
+					</s:layout>
+					<s:VGroup paddingTop="10" paddingLeft="5">
+						<s:Label text="Total Students" width="126" fontWeight="bold"/>
+						<s:Label text="Running Batches" width="126" fontWeight="bold"/>
+						<s:Label text="Current Student" width="101" fontWeight="bold"/>
+					</s:VGroup>
+			</s:Panel>-->
+			<s:Panel cornerRadius="5"  width="320" title="Month View" bottom="0">
+				<s:layout>
+					<s:VerticalLayout >
+					</s:VerticalLayout>
+				</s:layout>
+				<mx:LineChart id="myChart" 
+							  dataProvider="{model.monthlyCounts}" 
+							  showDataTips="true" width="300" height="150" 
+							  >
+					<mx:horizontalAxis>
+						<mx:CategoryAxis 
+							dataProvider="{model.monthlyCounts}" 
+							categoryField="month"
+							/>
+					</mx:horizontalAxis>
+					<mx:series>
+						<mx:LineSeries 
+							yField="actual" 
+							displayName="Actual" 
+							/>
+						
+						<mx:LineSeries 
+							yField="plan" 
+							displayName="Plan"
+							>
+							<mx:lineStroke>
+								<mx:Stroke 
+									color="0xE01BB9" 
+									weight="4" 
+									alpha=".4"
+									/>
+
+							</mx:lineStroke>
+						</mx:LineSeries>
+					</mx:series>
+				</mx:LineChart>
+				<mx:Legend dataProvider="{myChart}"/>
+				
+			</s:Panel>
+
+			
+		</s:VGroup>
+	</s:HGroup>	
+
+</s:Group>

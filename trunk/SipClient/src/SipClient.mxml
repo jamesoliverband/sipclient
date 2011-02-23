@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   xmlns:samples="samples.*" width="800" height="600"
+					   xmlns:view="com.genius.view.*" 
+					   applicationComplete="init()" initialize="initApplication()"
+					   creationComplete="creationCompleteHandler()" showStatusBar="false">
+	
+	<fx:Style source="assets/css/styles.css" />
+	<s:layout>
+		<s:VerticalLayout />
+	</s:layout>
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import air.net.URLMonitor;
+			
+			import com.as3xls.xls.ExcelFile;
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.DashBoardStat;
+			import com.genius.model.SQLQueries;
+			
+			protected var monitor:URLMonitor;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			protected function initApplication():void {
+
+				DataManager.createDatabase(false);
+				populateDashBoard();
+			}
+			
+			protected function populateDashBoard() : void {
+				//var studentLevel:ArrayCollection = DataManager.getStudentLevelCount();
+				var dStat:DashBoardStat = new DashBoardStat();
+				dStat.refreshDashBoradData();
+				model.dashBoardStat = dStat;
+				
+				model.courseList = DataManager.getCourseList();
+				model.teacherList = DataManager.getTeacherList();
+				model.batchList = DataManager.getActiveBatchList();
+				model.monthlyCounts = DataManager.getMonthCounts();
+			}
+			
+			protected function init():void
+			{
+				// Center main AIR app window on the screen
+				nativeWindow.x = (Capabilities.screenResolutionX - nativeWindow.width) / 2;
+				nativeWindow.y = (Capabilities.screenResolutionY - nativeWindow.height) / 2;
+				// Detecting online/offline network connectivity with a URLMonitor
+				monitor = new URLMonitor(new URLRequest("http://www.adobe.com")); // change URL to URL desired
+				monitor.addEventListener(StatusEvent.STATUS, onStatusChange);
+				monitor.pollInterval = 20000;// Milliseconds
+				monitor.start();
+				
+				// Detects a general change in network status
+				NativeApplication.nativeApplication.addEventListener(Event.NETWORK_CHANGE,onNetworkChange);
+				
+			}
+			// Handles when the HTTP Network status has changed.
+			protected function onStatusChange(e:StatusEvent):void
+			{
+				if (monitor.available) 
+				{
+					trace("Network is online");
+				} else {
+					trace("Network is offline");
+				}
+			}// The network status has changed
+			protected function onNetworkChange(e:Event):void
+			{
+				trace("Network State Changed");
+			}		
+		
+		
+			protected function onMiminizeClick():void {
+				stage.nativeWindow.minimize();
+			}
+		
+			protected function onCloseClick(e:Event):void {
+				NativeApplication.nativeApplication.exit();
+			}
+			
+			protected function dragWindow(evt:Event):void {
+				stage.nativeWindow.startMove();
+			}
+			
+			protected function dragWindowStop(evt:MouseEvent):void {
+				//stage.nativeWindow
+			}
+			
+			
+			protected function creationCompleteHandler():void {
+				//topBorder.addEventListener(MouseEvent.MOUSE_DOWN, dragWindow);
+			}
+			
+		]]>
+	</fx:Script>
+	<view:MainWindowView id="myAppContainer"
+				   title="SIP Manager"
+				   cornerRadius="5"
+				   controlBarVisible="false"
+				   width="100%" height="100%"
+				   horizontalCenter="0" verticalCenter="0"
+				   skinClass="com.genius.view.TitleWindowMainViewSkin"
+				   >
+		<view:DashBoard width="100%" height="100%"/>
+	</view:MainWindowView>
+</s:WindowedApplication>
