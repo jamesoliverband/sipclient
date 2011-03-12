@@ -9,12 +9,12 @@
 		<![CDATA[
 			import com.genius.core.DataManager;
 			import com.genius.model.ApplicationModel;
-			import com.genius.model.Batch;
-			import com.genius.model.SQLQueries;
 			import com.genius.model.Student;
 			
 			import mx.collections.ArrayCollection;
-			import mx.formatters.DateFormatter;
+			import mx.managers.PopUpManager;
+			
+			public var addNewBatchPopup:AddNewBatchPopUp;
 			
 			protected var sipDb:SQLConnection;
 			
@@ -31,39 +31,28 @@
 			private static var model:ApplicationModel = ApplicationModel.instance;
 			
 			
-			
-
-			
 			// Initialize the database and create table
 			protected function initDatabase():void
 			{
 				selectedStudents = new ArrayCollection();				
 			}
 			
-			protected function onAddBtnClick(event:MouseEvent):void
+			
+			
+			protected function onAddBatchBtnClick(event:MouseEvent):void
 			{
-				var batch:Batch = new Batch();
-				batch.teachername = cmbTeacher.selectedLabel;
-				batch.coursename = cmbCourse.selectedLabel;
-				batch.startdate = txtStartDate.text;
-				batch.enddate = txtEndDate.text;
-				batch.days = days.text;
-				batch.time = time.text;
-				batch.runningstatus = "Y"
-				DataManager.addNewBatch(batch);
-				model.batchList = DataManager.getActiveBatchList();
-				resetForm();
+				addNewBatchPopup = AddNewBatchPopUp(PopUpManager.createPopUp(this, AddNewBatchPopUp, false));
+				
+				addNewBatchPopup["addBatchBtn"].addEventListener("click", updateBatchList); 
+				
 			}
 			
-			protected function resetForm():void {
-				cmbCourse.selectedIndex = 0;
-				cmbTeacher.selectedIndex = 0;
-				txtStartDate.text = "";
-				txtEndDate.text = "";
-				days.text=""
-				time.text="";
-				model.selectedBatch = null;
+			private function updateBatchList(event:MouseEvent):void
+			{
+				model.batchList = DataManager.getActiveBatchList();
 			}
+			
+			
 			
 			protected function onEditBatchBtnClick(event:MouseEvent):void
 			{
@@ -96,7 +85,8 @@
 			protected function onBatchDetailsClick(event:MouseEvent):void {
 				model.selectedBatch = DataManager.getBatch(dg.selectedItem.id);
 				model.selectedBatch.studentList = DataManager.getBatchStudentList(dg.selectedItem.id);
-				this.batchViewStack.selectedIndex = 2;
+				PopUpManager.createPopUp(this, BatchDetailsPopUp, false)
+				
 			}
 			
 			protected function onSearchBtnClick(event:MouseEvent):void
@@ -150,35 +140,8 @@
 	<mx:ViewStack id="batchViewStack">
 		<s:NavigatorContent>
 			<s:VGroup width="476" height="387">
-				<s:Group x="106" y="44" width="379" height="239">
-					<s:Label x="10" y="10" text="Add New Batch" fontWeight="bold"/>
-					<mx:Form x="0" y="30">
-						<mx:FormItem label="Level:">
-							<mx:ComboBox id="cmbCourse"  dataProvider="{model.courseList}" labelField="coursename" > 
-							</mx:ComboBox>
-						</mx:FormItem>
-						<mx:FormItem label="Teacher:">
-							<mx:ComboBox id="cmbTeacher"  dataProvider="{model.teacherList}" labelField="teachername" > 
-							</mx:ComboBox>
-						</mx:FormItem>
-						<mx:FormItem label="Days">
-							<s:TextInput id="days"/>
-						</mx:FormItem>
-						<mx:FormItem label="Time">
-							<s:TextInput id="time"/>
-						</mx:FormItem>
-						<mx:FormItem label="Start Date:">
-							<mx:DateField id="txtStartDate" width="158" yearNavigationEnabled="true" formatString="DD-MM-YYYY"/>
-						</mx:FormItem>
-						<mx:FormItem label="End Date:">
-							<mx:DateField id="txtEndDate" width="158"  yearNavigationEnabled="true" formatString="DD-MM-YYYY"/>
-						</mx:FormItem>
-						<mx:FormItem>
-							<s:Button label="Add Batch" click="onAddBtnClick(event)"/>
-						</mx:FormItem>
-					</mx:Form>  	
-				</s:Group>
-				<mx:DataGrid id="dg" dataProvider="{model.batchList}" width="456" rowCount="10" height="191">
+				
+				<mx:DataGrid id="dg" dataProvider="{model.batchList}" width="600" rowCount="20" height="400">
 					<mx:columns>
 						<mx:DataGridColumn dataField="id" headerText="Batch ID"/>
 						<mx:DataGridColumn dataField="teachername" headerText="Teacher Name" />
@@ -187,10 +150,14 @@
 					</mx:columns>
 				</mx:DataGrid>
 				<s:HGroup left="10">
-					<s:Button  label="Edit Batch" click="onEditBatchBtnClick(event)" enabled="{dg.selectedIndex > -1}"/>
-					<s:Button  label="Mark Complete" click="onMarkCompleteClick(event)" enabled="{dg.selectedIndex > -1}"/>
-					<s:Button  label="Add Student" click="onAddStudentClick(event)" enabled="{dg.selectedIndex > -1}"/>
-					<s:Button  label="Details" click="onBatchDetailsClick(event)" enabled="{dg.selectedIndex > -1}"/>
+					<s:Button  label="Edit Batch" height="40" click="onEditBatchBtnClick(event)" enabled="{dg.selectedIndex > -1}"/>
+					<s:Button  label="Mark Complete" height="40" click="onMarkCompleteClick(event)" enabled="{dg.selectedIndex > -1}"/>
+					<s:Button  label="Add Student" height="40" click="onAddStudentClick(event)" enabled="{dg.selectedIndex > -1}"/>
+					<s:Button  label="Details" height="40" click="onBatchDetailsClick(event)" enabled="{dg.selectedIndex > -1}"/>
+				</s:HGroup>
+				
+				<s:HGroup left="10" paddingTop="50">
+					<s:Button  label="Add New Batch" height="40" click="onAddBatchBtnClick(event)" />
 				</s:HGroup>
 			</s:VGroup>
 		</s:NavigatorContent>
@@ -241,11 +208,6 @@
 					
 			</s:Group>
 		</s:NavigatorContent>
-		<s:NavigatorContent>
-			<s:VGroup>
-				<view:BatchDetails />
-				<s:Button left="10" label="Back" click="onClickBack(event)" />
-			</s:VGroup>
-		</s:NavigatorContent>
+		
 	</mx:ViewStack>
 </s:Group>

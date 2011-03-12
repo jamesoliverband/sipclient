@@ -62,6 +62,7 @@ in accordance with the terms of the license agreement accompanying it.
 			{
 				//titleBarBackgroundColor.color = "0xFFFFFF";
 				//getStyle("titleBarBackgroundColor");
+			
 			}
 			
 			if (getStyle("borderVisible") == true)
@@ -150,11 +151,12 @@ in accordance with the terms of the license agreement accompanying it.
 	
 	-->
 	
-	<s:filters>
+	<!--
+	<s:filters>-->
 		<!--<s:DropShadowFilter alpha="1" 
 		distance="11"
 		angle="135" color="#989898" inner="true" />-->
-		<s:BevelFilter 
+	<!--	<s:BevelFilter 
 			angle="30"
 			distance="2"
 			highlightColor="0x000000"
@@ -166,7 +168,7 @@ in accordance with the terms of the license agreement accompanying it.
 			shadowAlpha="0.7"
 			highlightAlpha="0.7" />
 	</s:filters>
-	
+	-->
 	
 	
 	<!--- drop shadow can't be hittable so all other graphics go in this group -->
@@ -210,7 +212,7 @@ in accordance with the terms of the license agreement accompanying it.
 		<!-- layer 2: background fill -->
 		<!--- Defines the appearance of the TitleWindowSkin class's background. -->
 		<s:Rect id="background" left="1" top="1" right="1" bottom="1">
-			<s:filters>
+			<!-- <s:filters>
 				
 				<s:DropShadowFilter id="dropShadow" alpha="0.52" 
 									distance="2"
@@ -223,10 +225,10 @@ in accordance with the terms of the license agreement accompanying it.
 				<s:DropShadowFilter id="topInnerdropShadow1" alpha="0.09" 
 									distance="11"
 									angle="135" color="#989898" inner="true" />
-			</s:filters>
+			</s:filters> Deepak--> 
 			<s:fill>
 				<!--Defines the TitleWindowSkin class's background fill. The default color is 0xFFFFFF.--> 
-				<s:SolidColor id="backgroundFill" color="0xffffff" color.disabled="#cccccc" color.disabledWithControlBar="#cccccc"/>
+				<s:SolidColor id="backgroundFill" color="0xFFFFFF" color.disabled="#cccccc" color.disabledWithControlBar="#cccccc"/>
 			</s:fill>
 		</s:Rect>
 		
@@ -246,6 +248,7 @@ in accordance with the terms of the license agreement accompanying it.
 				<s:Rect id="tbFill" left="0" right="0" top="0" bottom="1">
 					<s:fill>
 						<s:SolidColor id="titleBarBackgroundColor" color="0xFFFFFF"/>
+						
 					</s:fill>
 				</s:Rect>
 				
@@ -253,16 +256,16 @@ in accordance with the terms of the license agreement accompanying it.
 	
 				
 				
-				<!--<s:BitmapImage left="3" top="3" bottom="1" source="@Embed(source='/./assets/images/Sprint_Nextel.png')"/>-->
+				<s:BitmapImage left="0" top="0" bottom="0"  explicitMaxHeight="35"  fillMode="scale" explicitMinWidth="900" source="@Embed(source='/./assets/images/panel_bg.png')"/>
 				
-				<!--- layer 2: title bar divider @private -->
+				<!--- layer 2: title bar divider @private 
 				<s:Rect id="tbDiv" left="0" right="0" top="0" height="5" topLeftRadiusX="6" topRightRadiusX="6">
 					<s:fill>
 						<s:SolidColor color="0xFA8805" alpha="0.75" />
 					</s:fill>
-				</s:Rect>
+				</s:Rect>-->
 				
-				<!--- layer 2: title bar divider @private -->
+				<!--- layer 2: title bar divider @private 
 				<s:Rect id="tbDivLine" left="0" right="0" height="0" bottom="0">
 					<s:fill>
 						<s:LinearGradient rotation="90">
@@ -270,7 +273,7 @@ in accordance with the terms of the license agreement accompanying it.
 							<s:GradientEntry color="0xFFFFFF" />
 						</s:LinearGradient>
 					</s:fill>
-				</s:Rect> 
+				</s:Rect> -->
 				
 				<!-- layer 3: text -->
 				<!--- @copy spark.components.Panel#titleDisplay -->
@@ -314,7 +317,7 @@ in accordance with the terms of the license agreement accompanying it.
 							color.inactiveGroup="0xCECECE"/>-->
 							<s:GradientEntry color="0xf6f6f6"
 											 color.inactiveGroup="0xB2B2B2"/>
-							<s:GradientEntry color="0xffffff"
+							<s:GradientEntry color="0x000000"
 											 color.inactiveGroup="0xB2B2B2"/>
 						</s:LinearGradient>
 					</s:fill>

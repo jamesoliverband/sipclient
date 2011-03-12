@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" 
-					>
+<mx:TitleWindow 
+				xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				
+				layout="absolute" width="400" height="500" 
+				creationComplete="centerWindow()" title="Add Student" 
+				showCloseButton="true" close="closeWindow()" >
 	
-	<!-- TODO: This class will be removed soon... ::Deepak-->
+<s:Group >
+	
 	<!-- This class uses the Employee.as class included in the same samples folder -->
 	<fx:Script>
 		<![CDATA[
@@ -17,6 +22,7 @@
 			import mx.controls.Alert;
 			import mx.events.CalendarLayoutChangeEvent;
 			import mx.formatters.DateFormatter;
+			import mx.managers.PopUpManager;
 			
 			protected var sipDb:SQLConnection;
 			
@@ -77,7 +83,15 @@
 				txtMiddleName.text= "";
 			}
 
+			public function centerWindow():void
+			{
+				PopUpManager.centerPopUp(this);
+			}
 			
+			public function closeWindow():void
+			{
+				PopUpManager.removePopUp(this);
+			}
 	
 			
 		]]>
@@ -86,7 +100,7 @@
 	<s:layout>
 		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
 	</s:layout>
-	<s:VGroup width="476" height="387">
+	<s:VGroup width="360" height="387">
 		<s:Group x="106" y="44" width="379" height="366">
 			<s:Label x="10" y="10" text="Add Student" fontWeight="bold"/>
 			<mx:Form x="0" y="30">
@@ -128,3 +142,4 @@
 		</s:Group>
 	</s:VGroup>
 </s:Group>
+</mx:TitleWindow>

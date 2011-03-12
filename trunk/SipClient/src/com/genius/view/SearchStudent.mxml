@@ -3,6 +3,7 @@
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" 
 					>
+	<!-- This class will be removed soon ... all the functionality will be moved to different places. Deepak-->
 	
 	<!-- This class uses the Employee.as class included in the same samples folder -->
 	<fx:Script>

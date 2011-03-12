@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+				xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				
+				layout="absolute" width="350" height="350" 
+				creationComplete="centerWindow()" title="Add Batch" 
+				showCloseButton="true" close="closeWindow()" >
+	
+<s:Group >
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.SQLQueries;
+			import com.genius.model.Batch;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.formatters.DateFormatter;
+			import mx.managers.PopUpManager;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			// Initialize the database and create table
+			protected function initDatabase():void
+			{
+				// Create a file to hold the database
+				var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+				sipDb = new SQLConnection();
+				sipDb.open(dbFile);
+				
+			}
+			
+			protected function onAddBtnClick(event:MouseEvent):void
+			{
+				var batch:Batch = new Batch();
+				batch.teachername = cmbTeacher.selectedLabel;
+				batch.coursename = cmbCourse.selectedLabel;
+				batch.startdate = txtStartDate.text;
+				batch.enddate = txtEndDate.text;
+				batch.days = days.text;
+				batch.time = time.text;
+				batch.runningstatus = "Y"
+				DataManager.addNewBatch(batch);
+				model.batchList = DataManager.getActiveBatchList();
+				
+				closeWindow();
+				
+			}
+			
+			public function centerWindow():void
+			{
+				PopUpManager.centerPopUp(this);
+			}
+			
+			public function closeWindow():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+	
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<s:VGroup width="360" height="280">
+		<s:Group x="106" y="44" width="379" height="239">
+			<s:Label x="10" y="10" text="Add New Batch" fontWeight="bold"/>
+			<mx:Form x="0" y="30">
+				<mx:FormItem label="Level:">
+					<mx:ComboBox id="cmbCourse"  dataProvider="{model.courseList}" labelField="coursename" > 
+					</mx:ComboBox>
+				</mx:FormItem>
+				<mx:FormItem label="Teacher:">
+					<mx:ComboBox id="cmbTeacher"  dataProvider="{model.teacherList}" labelField="teachername" > 
+					</mx:ComboBox>
+				</mx:FormItem>
+				<mx:FormItem label="Days">
+					<s:TextInput id="days"/>
+				</mx:FormItem>
+				<mx:FormItem label="Time">
+					<s:TextInput id="time"/>
+				</mx:FormItem>
+				<mx:FormItem label="Start Date:">
+					<mx:DateField id="txtStartDate" width="158" yearNavigationEnabled="true" formatString="DD-MM-YYYY"/>
+				</mx:FormItem>
+				<mx:FormItem label="End Date:">
+					<mx:DateField id="txtEndDate" width="158"  yearNavigationEnabled="true" formatString="DD-MM-YYYY"/>
+				</mx:FormItem>
+				<mx:FormItem>
+					<s:Button id="addBatchBtn" label="Add Batch" click="onAddBtnClick(event)"/>
+				</mx:FormItem>
+			</mx:Form>  	
+		</s:Group>
+	</s:VGroup>
+</s:Group>
+</mx:TitleWindow>
