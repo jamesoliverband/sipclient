@@ -26,6 +26,8 @@ view|MainWindowView
 	background-color: #f6f6f6;
 	font-family: Arial, sans-serif;
 	font-lookup: auto;
+	
+	
 }
 
 
@@ -33,7 +35,8 @@ view|MainWindowView #titleDisplay
 {
 	left: 54;
 	font-size: 17;
-	font-style: italic;
+	font-style: normal;
+	font-weight:bold; 
 	padding-top: 4;
 	font-family: Arial, sans-serif;
 	font-lookup: auto;
@@ -43,6 +46,26 @@ view|MainWindowView #titleDisplay
 s|Button {
 	skin-class: ClassReference("com.genius.view.ui.skin.SipButton");
 	font-size: 12;
+	font-style: normal;
+	font-weight:bold;
+	font-family: Arial, sans-serif;
+	font-lookup: auto;
+}
+
+.BarButton {
+	skin-class: ClassReference("com.genius.view.ui.skin.SipBarButton");
+	
+	font-size: 16;
+	font-style: normal;
+	font-weight:bold;
+	font-family: Arial, sans-serif;
+	font-lookup: auto;
+	color: white;
+}
+
+.SubBarButton {
+	skin-class: ClassReference("com.genius.view.ui.skin.SipBarButton");
+	font-size: 14;
 	font-style: normal;
 	font-weight:bold;
 	font-family: Arial, sans-serif;
@@ -97,5 +120,59 @@ s|Button {
 	grayClose: false;
 	minimize: true;
 	background-alpha: 0;
+}
+
+mx|TitleWindow
+{
+	titleStyleName: "panelTitle";
+	contentStyleName: contentStyleName;
+	headerHeight:35;
+	
+	backgroundRepeat:repeat;
+	border-background-image:Embed(source='assets/images/panel_bg.png');
+	cornerRadius:8;
+	bottomCornerRadius: 3;
+	filters:dropShadow;
+	borderColor:#dddddd;
+	border-style: none;
+	paddingTop:20;
+	paddingLeft:20;
+	paddingRight:20;
+	paddingBottom:20;
+}
+.panelTitle{
+	textAlign:left;
+	fontSize:13;
+	font-weight:bold;
+}
+.contentStyleName
+{
+	skin: ClassReference("com.genius.view.ui.skin.PanelContentSkin");
+	filters: contentDropShadow;
+	cornerRadius: 0;
+}
+
+/****************************************************************************************************************
+FILTERS                                                            *
+*****************************************************************************************************************
+*/
+.dropShadow
+{
+	filterClass:ClassReference('com.asfusion.skins.filters.CSSDropShadowFilter');
+	distance:5;
+	blurX:32;
+	blurY:32;
+	quality:3;
+	alpha:0.6;
+}
+.contentDropShadow
+{
+	filterClass:ClassReference('com.asfusion.skins.filters.CSSDropShadowFilter');
+	distance: 0;
+	blurX: 4;
+	blurY: 4;
+	quality:3;
+	alpha: 0.5;
+	inner: true;
 }
 

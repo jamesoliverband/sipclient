@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mx:TitleWindow 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/mx" 
+	
+	layout="absolute" width="300" height="250" 
+	creationComplete="centerWindow()" title="Student Search" 
+	showCloseButton="true" close="closeWindow()" >
+	
+	<fx:Metadata>
+		[Event(name="searchTriggered", type="flash.events.Event")]
+	</fx:Metadata>
+	
+<s:Group>
+	
+	<fx:Script>
+		<![CDATA[
+		
+		public var firstName:String = "";
+		public var lastName:String="";
+		public var level:String="";
+		
+		private function searchButtonClicked():void
+		{
+			firstName = txtFirstName.text;;
+			lastName = txtLastName.text;
+			level = txtLevel.text;
+			
+			dispatchEvent(new Event("searchTriggered"));
+		}
+		
+		]]>
+	</fx:Script>
+
+	
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.SQLQueries;
+			import com.genius.model.Student;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+			
+			[Bindable]
+			protected var selectedStackIndex:int = 0;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;			
+			
+			protected function onSearchBtnClick(event:MouseEvent):void
+			{
+				var student:Student = new Student();
+				student.firstname = txtFirstName.text;
+				student.lastname = txtLastName.text;
+				student.level = txtLevel.text;
+				model.students = DataManager.searchStudents(student);
+				searchButtonClicked(); //Above lines will be removed later ::Deepak
+				closeWindow();
+			}
+	
+			public function centerWindow():void
+			{
+				PopUpManager.centerPopUp(this);
+			}
+			
+			public function closeWindow():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</fx:Script>
+		
+		<s:Group x="10" y="10" width="200" height="200">
+		
+			<mx:Form x="0" y="0">
+				<mx:FormItem label="First Name:">
+					<s:TextInput id="txtFirstName"/>
+				</mx:FormItem>
+				<mx:FormItem label="Last Name:">
+					<s:TextInput id="txtLastName"/>
+				</mx:FormItem>
+				<mx:FormItem label="Level:">
+					<s:TextInput id="txtLevel"/>
+				</mx:FormItem>
+				<mx:FormItem>
+					<s:Button id="searchBtn" label="Search" click="onSearchBtnClick(event)"/>
+				</mx:FormItem>
+			</mx:Form>  	
+		</s:Group>
+	
+	</s:Group>
+</mx:TitleWindow>

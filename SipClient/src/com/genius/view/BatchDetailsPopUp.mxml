@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+				xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				
+				layout="absolute" width="450" height="500" 
+				creationComplete="centerWindow()" title="Batch Details" 
+				showCloseButton="true" close="closeWindow()" >
+	
+<s:Group >
+	<fx:Script>
+		<![CDATA[
+			import com.genius.model.ApplicationModel;
+			
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			// Initialize the database and create table
+			protected function initDatabase():void
+			{
+				// Create a file to hold the database
+				var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+				sipDb = new SQLConnection();
+				sipDb.open(dbFile);
+				
+			}
+			
+			public function centerWindow():void
+			{
+				PopUpManager.centerPopUp(this);
+			}
+			
+			public function closeWindow():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+	
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<s:VGroup width="360" height="280">
+		
+		<s:HGroup><s:Label x="5" width="100" text="BatchId" fontWeight="bold"/><s:Label text="{model.selectedBatch.id}" fontWeight="bold" /></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="Teacher" fontWeight="bold"/><s:Label text="{model.selectedBatch.teachername}" /></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="Days" fontWeight="bold"/><s:Label text="{model.selectedBatch.days}" /></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="Time" fontWeight="bold"/><s:Label text="{model.selectedBatch.time}" /></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="Start Date" fontWeight="bold" /><s:Label text="{model.selectedBatch.startdate}" /></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="End Date" fontWeight="bold"/><s:Label text="{model.selectedBatch.enddate}" /></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="Level" fontWeight="bold" /><s:Label text="{model.selectedBatch.coursename}" /></s:HGroup>
+		
+		<mx:DataGrid id="dgStudents" dataProvider="{model.selectedBatch.studentList}" width="400" rowCount="10">
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="Student ID"/>
+				<mx:DataGridColumn dataField="firstname" headerText="First Name" />
+				<mx:DataGridColumn dataField="lastname" headerText="Last Name"/>
+				<mx:DataGridColumn dataField="dob" headerText="DOB"/>
+				<mx:DataGridColumn dataField="contactnumber1" headerText="Contact "/>
+			</mx:columns>
+		</mx:DataGrid>
+	</s:VGroup>
+</s:Group>
+</mx:TitleWindow>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+				xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				
+				layout="absolute" width="400" height="500" 
+				creationComplete="centerWindow()" title="Edit Student" 
+				showCloseButton="true" close="closeWindow()" >
+	
+<s:Group >
+	
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.SQLQueries;
+			import com.genius.model.Student;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.formatters.DateFormatter;
+			import mx.managers.PopUpManager;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			// Initialize the database and create table
+			protected function initDatabase():void
+			{
+				// Create a file to hold the database
+				var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+				sipDb = new SQLConnection();
+				sipDb.open(dbFile);
+				
+			}
+			
+			protected function onSaveBtnClick(event:MouseEvent):void
+			{
+				//var selectedStudentId:String = dg.selectedItem.id;
+				//model.currentStudent = DataManager.getStudentForId(selectedStudentId);
+				//DataManager.updateStudent(student);
+				
+				if(txtFirstName1.text== "" || txtLastName1.text == ""
+					|| txtDob.text == "" ||  txtContact1.text == "") {
+					
+					Alert.show("Please enter valid data for all required fields. ");
+					return;
+				}
+				var student:Student = new Student();
+				student.id = lblStudentId.text;
+				student.firstname = txtFirstName1.text;
+				student.lastname = txtLastName1.text;
+				student.dob = txtDob.text;
+				student.contactnumber1 = txtContact1.text;
+				student.contactnumber2 = txtContact2.text;
+				student.contactnumber3 = txtContact3.text;
+				student.schoolname = txtSchoolName.text;
+				student.middlename = txtMiddleName.text;
+				DataManager.updateStudent(student);
+				model.currentStudent = null;
+				closeWindow();
+				Alert.show("Changes Saved Successfully");
+			}
+			
+			public function centerWindow():void
+			{
+				PopUpManager.centerPopUp(this);
+			}
+			
+			public function closeWindow():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+	
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<s:VGroup width="360" height="387">
+		<s:Group x="106" y="44" width="379" height="366">
+			
+			<mx:Form x="0" y="30">
+				<mx:FormItem label="Id:">
+					<s:Label id="lblStudentId" text="{model.currentStudent.id}"/>
+				</mx:FormItem>
+				<mx:FormItem label="First Name:">
+					<s:TextInput id="txtFirstName1" text="{model.currentStudent.firstname}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Middle Name:">
+					<s:TextInput id="txtMiddleName" text="{model.currentStudent.middlename}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Last Name:">
+					<s:TextInput id="txtLastName1" text="{model.currentStudent.lastname}" />
+				</mx:FormItem>
+				<mx:FormItem label="Date of Birth:">
+					<mx:DateField id="txtDob" width="158" yearNavigationEnabled="true" formatString="DD-MM-YYYY" text="{model.currentStudent.dob}"/>
+				</mx:FormItem>
+				<mx:FormItem label="School:">
+					<s:TextInput id="txtSchoolName" text="{model.currentStudent.schoolname}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Contact Number 1 :">
+					<s:TextInput id="txtContact1" restrict="0-9" maxChars="10" text="{model.currentStudent.contactnumber1}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Contact Number 2 :">
+					<s:TextInput id="txtContact2" restrict="0-9" maxChars="10" text="{model.currentStudent.contactnumber2}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Contact Number 3 :">
+					<s:TextInput id="txtContact3" restrict="0-9" maxChars="10" text="{model.currentStudent.contactnumber3}"/>
+				</mx:FormItem>
+				<mx:FormItem>
+					<s:Button id="saveBtn" label="Save Changes" click="onSaveBtnClick(event)"/>
+				</mx:FormItem>
+			</mx:Form> 	
+		</s:Group>
+	</s:VGroup>
+</s:Group>
+</mx:TitleWindow>

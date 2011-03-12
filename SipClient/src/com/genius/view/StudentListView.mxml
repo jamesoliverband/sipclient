@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					creationComplete="refreshStudentsDefaultList()" xmlns:view="com.genius.view.*">
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.Student;
+			
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			
+			public var studentSearchPopup:StudentSearchPopUp;
+			public var editStudentPopup:EditStudentPopUp;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+			
+			[Bindable]
+			protected var selectedStackIndex:int = 0;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;			
+			
+			protected function onSearchBtnClick(event:MouseEvent):void
+			{
+				// Create the pop-up and cast the return value of the createPopUp()
+				// method to the StudentSearchPopUp custom component.
+				studentSearchPopup = StudentSearchPopUp(PopUpManager.createPopUp(this, StudentSearchPopUp, false));
+				
+				// Set the event listeners for the StudentSearchPopUp component. on Search Button
+				studentSearchPopup["searchBtn"].addEventListener("click", doSearch); 
+				
+				
+			}
+			
+			private function doSearch(event:Event):void {
+				var student:Student = new Student();
+				student.firstname = studentSearchPopup.txtFirstName.text.toString();;
+				student.lastname = studentSearchPopup.txtLastName.text.toString();
+				student.level = studentSearchPopup.txtLevel.text.toString();
+				students = DataManager.searchStudents(student);
+			}
+			
+			protected function onAddBtnClick(event:MouseEvent):void
+			{
+				PopUpManager.createPopUp(this, AddNewStudentPopUp, false);
+			}
+			
+			public function onClearSearchBtnClick(event:MouseEvent):void 
+			{
+				refreshStudentsDefaultList();	
+			}
+			
+			public function refreshStudentsDefaultList():void
+			{
+				var student:Student = new Student();
+				student.firstname = "";
+				student.lastname = "";
+				student.level = "";
+				students = DataManager.searchStudents(student);
+			}
+			
+			private function updateListAfterSave(event:Event):void
+			{
+				refreshStudentsDefaultList();
+			}
+			
+			protected function onEditBtnClick(event:MouseEvent):void
+			{
+				var selectedStudentId:String = dg.selectedItem.id;
+				model.currentStudent = DataManager.getStudentForId(selectedStudentId);
+				//selectedStackIndex=1;
+				editStudentPopup = EditStudentPopUp(PopUpManager.createPopUp(this, EditStudentPopUp, false));
+				editStudentPopup["saveBtn"].addEventListener("click", updateListAfterSave); 
+				
+			}
+			
+					
+			// Delete a row from the student table
+			protected function deleteStudent(student:Student):void
+			{
+				var sqlDelete:String = "delete from students where id=?";
+				var stmt:SQLStatement = new SQLStatement();
+				stmt.sqlConnection = sipDb;
+				stmt.text = sqlDelete;
+				stmt.parameters[0] = student.id;
+				stmt.execute();
+			}
+			
+	
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<mx:ViewStack id="studentstack" selectedIndex="{selectedStackIndex}">
+		
+	
+	<s:NavigatorContent>
+	<s:VGroup width="501" height="476">
+	
+		<s:Label x="10" y="10" text="Student List" fontFamily="Arial" fontWeight="bold"/>
+		
+		<mx:DataGrid id="dg" dataProvider="{students}" width="600" rowCount="25" height="400">
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="Student ID"/>
+				<mx:DataGridColumn dataField="fullName" headerText="Name" />
+				<mx:DataGridColumn dataField="currentlevel" headerText="Level"/>
+				<mx:DataGridColumn dataField="contactnumber1" headerText="Contact Number"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<s:Button left="10" label="Edit" height="40" click="onEditBtnClick(event)" enabled="{dg.selectedIndex > -1}"/>
+		
+		<s:HGroup horizontalAlign="right" paddingTop="50" x="700">
+			<s:Button left="10" label="Search"  height="40" click="onSearchBtnClick(event)" />
+			<s:Button left="10" label="Clear Search" height="40"  click="onClearSearchBtnClick(event)" />
+			<s:Button left="10" label="Add Student" height="40" click="onAddBtnClick(event)" />
+		</s:HGroup>
+		
+	</s:VGroup>
+	</s:NavigatorContent>
+		
+	</mx:ViewStack>
+
+</s:Group>

@@ -10,6 +10,8 @@
 			import com.genius.model.ApplicationModel;
 			import com.genius.model.DashBoardStat;
 			
+			import mx.managers.PopUpManager;
+			
 			[Bindable]
 			private var dashBoardStackIndex:int = 0;
 			
@@ -18,15 +20,41 @@
 			
 			private function onHomeClick():void {
 				model.dashBoardStat.refreshDashBoradData();
-				dashBoardStackIndex = 0;			
+				dashBoardStackIndex = 0;
+				
 			}
 			
-			private function onAddStudentClick():void {
+			private function onManageClick():void {
+				if (manageGroup.visible == false ) {
+					manageGroup.includeInLayout=true;
+					manageGroup.visible = true;
+				} else {
+					manageGroup.includeInLayout=false;
+					manageGroup.visible = false;
+				}
+			}
+			
+			private function onStudentClick():void {
 				dashBoardStackIndex = 1;	
 			}
-			
-			private function onAddBatchClick():void {
+			private function onBatchClick():void {
 				dashBoardStackIndex = 4;	
+			}
+			private function onTeacherClick():void {
+				dashBoardStackIndex = 6;	
+			}
+			private function onCourseClick():void {
+				dashBoardStackIndex = 7;	
+			}
+			
+			private function onPlanningClick():void {
+				if (planningGroup.visible == false ) {
+					planningGroup.includeInLayout=true;
+					planningGroup.visible = true;
+				} else {
+					planningGroup.includeInLayout=false;
+					planningGroup.visible = false;
+				}
 			}
 			
 			private function onSearchClick():void {
@@ -34,14 +62,20 @@
 			}
 			
 			private function onReportsClick():void {
-				dashBoardStackIndex = 5;
+				dashBoardStackIndex = 8;
+			}
+			private function onExpensesClick():void {
+				dashBoardStackIndex = 9;
 			}
 			
 			private function onSettingsClick():void {
 				dashBoardStackIndex = 3;
 			}
 
-			
+			public function openWindow():void
+			{
+				PopUpManager.createPopUp(this,AddNewStudentPopUp,false);
+			}
 			  
 			
 		]]>
@@ -51,22 +85,37 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<s:HGroup width="100%" height="100%">
-		<s:BorderContainer width="120" height="100%" backgroundColor="#797248">
-			<s:VGroup width="120" height="100%" horizontalAlign="center" paddingTop="20">
-					<s:Button label="Home" height="50" width="100" click="onHomeClick()" />
-					<s:Button label="Add Student" height="50" width="100" click="onAddStudentClick()"/>
-					<s:Button label="Add Batch" height="50" width="100" click="onAddBatchClick()"/>
-					<s:Button label="Search" height="50" width="100" click="onSearchClick()"/>
-					<s:Button label="Reports" height="50" width="100" click="onReportsClick()"/>
-					<s:Button label="Settings" height="50" width="100" click="onSettingsClick()"/>
+		<s:BorderContainer width="150" height="100%" backgroundColor="#000000" backgroundAlpha="0.3">
+			<s:VGroup width="150" height="100%" horizontalAlign="center" paddingTop="80" paddingRight="2" paddingBottom="0">
+					<s:Button label="DashBoard" height="50" width="150" click="onHomeClick()" styleName="BarButton" />
+						
+					<s:Button label="Manage" height="50" width="150" click="onManageClick()" styleName="BarButton"/>
+						<s:VGroup id="manageGroup" includeInLayout="false" visible="false" paddingLeft="30" horizontalAlign="left">
+							<s:Button label="Student " height="30" width="110" click="onStudentClick()" styleName="SubBarButton" />
+							<s:Button label="Batch" height="30" width="110" click="onBatchClick()" styleName="SubBarButton"/>
+							<s:Button label="Teacher" height="30" width="110" click="onTeacherClick()" styleName="SubBarButton"/>
+							<s:Button label="Course" height="30" width="110" click="onCourseClick()" styleName="SubBarButton"/>
+						</s:VGroup>
+					<s:Button label="Planning" height="50" width="150" click="onPlanningClick()" styleName="BarButton"/>
+						<s:VGroup id="planningGroup" includeInLayout="false" visible="false" paddingLeft="30" horizontalAlign="left">
+							<s:Button label="Reports " height="30" width="110" click="onReportsClick()" styleName="SubBarButton" />
+							<s:Button label="Expenses" height="30" width="110" click="onExpensesClick()" styleName="SubBarButton"/>
+							<s:Button label="Open Window" height="30" width="110" click="openWindow()" styleName="SubBarButton"/>
+						</s:VGroup>
+				
+					<!--<s:Button label="Add Student" height="50" width="150" click="onAddStudentClick()" styleName="BarButton"/>
+					<s:Button label="Add Batch" height="50" width="150" click="onAddBatchClick()" styleName="BarButton"/>
+					<s:Button label="Search" height="50" width="150" click="onSearchClick()" styleName="BarButton"/>
+					<s:Button label="Reports" height="50" width="150" click="onReportsClick()" styleName="BarButton"/>
+					<s:Button label="Settings" height="50" width="150" click="onSettingsClick()" styleName="BarButton"/>-->
 			</s:VGroup>
 		</s:BorderContainer>
-		<mx:ViewStack x="120" id="dashBoardStack" selectedIndex="{dashBoardStackIndex}" >
+		<mx:ViewStack x="150" id="dashBoardStack" selectedIndex="{dashBoardStackIndex}" >
 			<s:NavigatorContent>
 				<view:DashBoardMainView />
 			</s:NavigatorContent>
 			<s:NavigatorContent>
-				<view:AddNewStudent />
+				<view:StudentListView />
 			</s:NavigatorContent>
 			<s:NavigatorContent>
 				<view:SearchStudent />
@@ -75,12 +124,23 @@
 				<view:SettingsView />
 			</s:NavigatorContent>
 			<s:NavigatorContent>
-				<view:ManageBatch />
+				<view:BatchListView />
 			</s:NavigatorContent>
 			<s:NavigatorContent>
 				<view:ReportsView />
 			</s:NavigatorContent>
-
+			<s:NavigatorContent>
+				<view:ManageTeacher/>
+			</s:NavigatorContent>
+			<s:NavigatorContent>
+				<view:ManageCourse/>
+			</s:NavigatorContent>
+			<s:NavigatorContent>
+				<view:PlanningBoard/>
+			</s:NavigatorContent>
+			<s:NavigatorContent>
+				<view:ManageExpenses/>
+			</s:NavigatorContent>
 		</mx:ViewStack>
 	</s:HGroup>
 </s:NavigatorContent>
