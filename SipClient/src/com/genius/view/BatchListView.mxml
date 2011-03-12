@@ -21,11 +21,7 @@
 			[Bindable]
 			protected var students:ArrayCollection;
 
-			[Bindable]
-			protected var eligibleStudents:ArrayCollection;
-
-			[Bindable]
-			protected var selectedStudents:ArrayCollection;
+			
 
 			[Bindable]
 			private static var model:ApplicationModel = ApplicationModel.instance;
@@ -34,7 +30,7 @@
 			// Initialize the database and create table
 			protected function initDatabase():void
 			{
-				selectedStudents = new ArrayCollection();				
+								
 			}
 			
 			
@@ -79,51 +75,18 @@
 			protected function onAddStudentClick(event:MouseEvent):void {
 				model.selectedBatch = DataManager.getBatch(dg.selectedItem.id);
 				model.selectedBatch.studentList = DataManager.getBatchStudentList(dg.selectedItem.id);
-				this.batchViewStack.selectedIndex = 1;
+				//TODO: Open AddStudentToBatchPopup.
+				PopUpManager.createPopUp(this, AddStudentToBatchtPopUp, false);
 			}
 			
 			protected function onBatchDetailsClick(event:MouseEvent):void {
 				model.selectedBatch = DataManager.getBatch(dg.selectedItem.id);
 				model.selectedBatch.studentList = DataManager.getBatchStudentList(dg.selectedItem.id);
-				PopUpManager.createPopUp(this, BatchDetailsPopUp, false)
+				PopUpManager.createPopUp(this, BatchDetailsPopUp, false);
 				
 			}
 			
-			protected function onSearchBtnClick(event:MouseEvent):void
-			{
-				var student:Student = new Student();
-				student.firstname = txtFirstName.text;
-				student.lastname = txtLastName.text;
-				student.level = cmbCourse1.selectedLabel;
-				eligibleStudents = DataManager.searchStudents(student);
-			}
-			
-			protected function onMoveRightClick(event:MouseEvent):void
-			{
-				var selectedStudentIndex:int = eligibleList.selectedIndex;
-				if(selectedStudents == null ) {
-					selectedStudents = new ArrayCollection();
-				}
-				selectedStudents.addItem(eligibleStudents.getItemAt(selectedStudentIndex));
-				
-			}
-			
-			protected function onMoveLeftClick(event:MouseEvent):void
-			{
-				
-			}
-			
-			protected function onAddStudentToBatch(event:MouseEvent):void
-			{
-				if(selectedStudents != null && selectedStudents.length > 0) {
-					for (var a:int=0; a < selectedStudents.length; a++ ) {
-						DataManager.addStudentToBatch(selectedStudents.getItemAt(a).id , model.selectedBatch.id);
-						DataManager.updateStudentCurrentLevel(selectedStudents.getItemAt(a).id, model.selectedBatch.coursename);
-					}
-				}
-				
-			}
-			
+		
 			protected function onClickBack(event:MouseEvent):void
 			{
 				this.batchViewStack.selectedIndex = 0;
@@ -161,53 +124,6 @@
 				</s:HGroup>
 			</s:VGroup>
 		</s:NavigatorContent>
-		<s:NavigatorContent>
-			<s:Group>
 				
-					<s:layout>
-						<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
-					</s:layout>
-					<s:VGroup width="501" height="476">
-						
-						<s:HGroup><s:Label text="BatchId" /><s:Label text="{model.selectedBatch.id}" /></s:HGroup>
-						<s:HGroup><s:Label text="Teacher" /><s:Label text="{model.selectedBatch.teachername}" /></s:HGroup>
-						<s:Group x="106" y="44" width="379" height="185">
-							<s:Label x="10" y="10" text="Search Student" fontFamily="Arial" fontWeight="bold"/>
-							<mx:Form x="0" y="30">
-								<mx:FormItem label="First Name:">
-									<s:TextInput id="txtFirstName"/>
-								</mx:FormItem>
-								<mx:FormItem label="Last Name:">
-									<s:TextInput id="txtLastName"/>
-								</mx:FormItem>
-								<mx:FormItem label="Level:">
-									<mx:ComboBox id="cmbCourse1"  dataProvider="{model.courseList}" labelField="coursename" > 
-									</mx:ComboBox>
-								</mx:FormItem>
-								<mx:FormItem>
-									<s:Button label="Search" click="onSearchBtnClick(event)"/>
-								</mx:FormItem>
-							</mx:Form>  	
-						</s:Group>
-						<s:HGroup>
-							<s:List id="eligibleList" dataProvider="{eligibleStudents}" labelField="firstname">
-								
-							</s:List>
-							<s:VGroup>
-								<s:Button label=">>" click="onMoveRightClick(event)"/>
-								<s:Button label="--" click="onMoveLeftClick(event)"/>
-							</s:VGroup>
-							
-							<s:List id="selectedList" dataProvider="{selectedStudents}" labelField="firstname">
-									
-							</s:List>
-							</s:HGroup>
-						<s:Button left="10" label="Add Selected Students"  enabled="{dg.selectedIndex > -1}" click="onAddStudentToBatch(event)"/>
-						<s:Button left="10" label="Back"  enabled="{dg.selectedIndex > -1}" click="onClickBack(event)"/>
-					</s:VGroup>	
-					
-			</s:Group>
-		</s:NavigatorContent>
-		
 	</mx:ViewStack>
 </s:Group>

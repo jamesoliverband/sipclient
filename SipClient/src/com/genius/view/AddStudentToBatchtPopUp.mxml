@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+				xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				
+				layout="absolute" width="400" height="500" 
+				creationComplete="centerWindow()" title="Add Student to Batch" 
+				showCloseButton="true" close="closeWindow()" >
+	
+<s:Group >
+	
+	<!-- This class uses the Employee.as class included in the same samples folder -->
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.SQLQueries;
+			import com.genius.model.Student;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.formatters.DateFormatter;
+			import mx.managers.PopUpManager;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+			
+			[Bindable]
+			protected var eligibleStudents:ArrayCollection;
+			
+			[Bindable]
+			protected var selectedStudents:ArrayCollection;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			// Initialize the database and create table
+			protected function initDatabase():void
+			{
+				// Create a file to hold the database
+				var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+				sipDb = new SQLConnection();
+				sipDb.open(dbFile);
+				
+				selectedStudents = new ArrayCollection();
+				
+			}
+			
+			
+			
+		
+			protected function onSearchBtnClick(event:MouseEvent):void
+			{
+				var student:Student = new Student();
+				student.firstname = txtFirstName.text;
+				student.lastname = txtLastName.text;
+				student.level = cmbCourse1.selectedLabel;
+				eligibleStudents = DataManager.searchStudents(student);
+			}
+			
+			protected function onMoveRightClick(event:MouseEvent):void
+			{
+				var selectedStudentIndex:int = eligibleList.selectedIndex;
+				if(selectedStudents == null ) {
+					selectedStudents = new ArrayCollection();
+				}
+				selectedStudents.addItem(eligibleStudents.getItemAt(selectedStudentIndex));
+				
+			}
+			
+			protected function onAddStudentToBatch(event:MouseEvent):void
+			{
+				if(selectedStudents != null && selectedStudents.length > 0) {
+					for (var a:int=0; a < selectedStudents.length; a++ ) {
+						DataManager.addStudentToBatch(selectedStudents.getItemAt(a).id , model.selectedBatch.id);
+						DataManager.updateStudentCurrentLevel(selectedStudents.getItemAt(a).id, model.selectedBatch.coursename);
+					}
+				}
+				
+			}
+			
+			
+			protected function onMoveLeftClick(event:MouseEvent):void
+			{
+				
+			}
+			
+			public function centerWindow():void
+			{
+				PopUpManager.centerPopUp(this);
+			}
+			
+			public function closeWindow():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+	
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<s:VGroup width="360" height="400">
+		
+		<s:HGroup><s:Label text="BatchId" /><s:Label text="{model.selectedBatch.id}" /></s:HGroup>
+		<s:HGroup><s:Label text="Teacher" /><s:Label text="{model.selectedBatch.teachername}" /></s:HGroup>
+		<s:Group x="106" y="10" width="379" height="185">
+			<s:Label x="10" y="10" text="Search Student" fontFamily="Arial" fontWeight="bold"/>
+			<mx:Form x="0" y="30">
+				<mx:FormItem label="First Name:">
+					<s:TextInput id="txtFirstName"/>
+				</mx:FormItem>
+				<mx:FormItem label="Last Name:">
+					<s:TextInput id="txtLastName"/>
+				</mx:FormItem>
+				<mx:FormItem label="Level:">
+					<mx:ComboBox id="cmbCourse1"  dataProvider="{model.courseList}" labelField="coursename" > 
+					</mx:ComboBox>
+				</mx:FormItem>
+				<mx:FormItem>
+					<s:Button label="Search" click="onSearchBtnClick(event)"/>
+				</mx:FormItem>
+			</mx:Form>  	
+		</s:Group>
+		<s:HGroup>
+			<s:List id="eligibleList" dataProvider="{eligibleStudents}" labelField="firstname">
+				
+			</s:List>
+			<s:VGroup>
+				<s:Button label=">>" click="onMoveRightClick(event)"/>
+				<s:Button label="--" click="onMoveLeftClick(event)"/>
+			</s:VGroup>
+			
+			<s:List id="selectedList" dataProvider="{selectedStudents}" labelField="firstname">
+				
+			</s:List>
+		</s:HGroup>
+		<s:Button left="10" label="Add Selected Students"   click="onAddStudentToBatch(event)"/>
+	
+	</s:VGroup>	
+	
+</s:Group>
+</mx:TitleWindow>

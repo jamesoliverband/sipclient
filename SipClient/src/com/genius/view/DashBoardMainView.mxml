@@ -99,27 +99,24 @@
 		
 			
 		<s:VGroup x="10" y="10">
-			<s:Panel cornerRadius="5"  width="320" height="209" title="Students - Level Wise breakup">
+			
+			<s:Panel cornerRadius="5"  width="351" height="250" title="Batches Summary">
 				<s:layout>
 					<s:VerticalLayout >
 					</s:VerticalLayout>
 				</s:layout>
-				<s:HGroup>
-				<mx:PieChart id="studentLevelPieChart" height="164" width="206"  
-							  dataProvider="{model.dashBoardStat.studentLevelData}"  dataTipItemsSet="true" >
-				<mx:series>
-					<mx:PieSeries 
-						field="studentcount" 
-						nameField="level" 
-						labelPosition="inside"
-						/>
-				</mx:series>
-				</mx:PieChart>
-				<mx:Legend dataProvider="{studentLevelPieChart}"  />
-				</s:HGroup>
+				<mx:DataGrid paddingLeft="5" paddingTop="5" id="batchSummary" width="350" rowCount="8" dataProvider="{model.batchList}" height="220">
+					<mx:columns>
+						<mx:DataGridColumn dataField="id" headerText="Batch ID"/>
+						<mx:DataGridColumn dataField="teachername" headerText="Teacher Name" />
+						<mx:DataGridColumn dataField="coursename" headerText="Course" />
+						<mx:DataGridColumn dataField="count" headerText="Students" />
+					</mx:columns>
+				</mx:DataGrid>
 			</s:Panel>
-			<s:Panel cornerRadius="5" title="Birthdays This Month" width="320" height="184">
-				<mx:DataGrid  id="bgrid" width="298" rowCount="5" dataProvider="{model.dashBoardStat.currentMonthBdayStudents}" height="128">
+			
+			<s:Panel cornerRadius="5" title="Birthdays This Month" width="351" height="250" >
+				<mx:DataGrid  id="bgrid" width="350" rowCount="8" dataProvider="{model.dashBoardStat.currentMonthBdayStudents}" height="220">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Name"  dataField="firstname"/>
 						<mx:DataGridColumn headerText="Current Level"  dataField="level" />
@@ -129,20 +126,7 @@
 			</s:Panel>			
 		</s:VGroup>
 		<s:VGroup x="250" y="10">
-			<s:Panel cornerRadius="5"  width="320" height="200" title="Batches Summary">
-				<s:layout>
-					<s:VerticalLayout >
-					</s:VerticalLayout>
-				</s:layout>
-				<mx:DataGrid paddingLeft="5" paddingTop="5" id="batchSummary" width="310" rowCount="5" dataProvider="{model.batchList}" height="150">
-					<mx:columns>
-						<mx:DataGridColumn dataField="id" headerText="Batch ID"/>
-						<mx:DataGridColumn dataField="teachername" headerText="Teacher Name" />
-						<mx:DataGridColumn dataField="coursename" headerText="Course" />
-						<mx:DataGridColumn dataField="count" headerText="Students" />
-					</mx:columns>
-				</mx:DataGrid>
-			</s:Panel>
+			
 			
 			<!--<s:Panel cornerRadius="5"  width="320" height="200" title="Overall Counts">
 					<s:layout>
@@ -155,14 +139,35 @@
 						<s:Label text="Current Student" width="101" fontWeight="bold"/>
 					</s:VGroup>
 			</s:Panel>-->
-			<s:Panel cornerRadius="5"  width="320" title="Month View" bottom="0">
+			
+			<s:Panel cornerRadius="5"  width="350" height="250" title="Students - Level Wise breakup">
+				<s:layout>
+					<s:VerticalLayout >
+					</s:VerticalLayout>
+				</s:layout>
+				<s:HGroup>
+					<mx:PieChart id="studentLevelPieChart" height="204" width="226"  
+								 dataProvider="{model.dashBoardStat.studentLevelData}"  dataTipItemsSet="true" >
+						<mx:series>
+							<mx:PieSeries 
+								field="studentcount" 
+								nameField="level" 
+								labelPosition="inside"
+								/>
+						</mx:series>
+					</mx:PieChart>
+					<mx:Legend dataProvider="{studentLevelPieChart}"  />
+				</s:HGroup>
+			</s:Panel>
+			
+			<s:Panel cornerRadius="5"  width="350" height="250" title="Month View" bottom="0">
 				<s:layout>
 					<s:VerticalLayout >
 					</s:VerticalLayout>
 				</s:layout>
 				<mx:LineChart id="myChart" 
 							  dataProvider="{model.monthlyCounts}" 
-							  showDataTips="true" width="300" height="150" 
+							  showDataTips="true" width="300" height="160" 
 							  >
 					<mx:horizontalAxis>
 						<mx:CategoryAxis 
