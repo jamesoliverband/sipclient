@@ -71,13 +71,7 @@
 			private function onSettingsClick():void {
 				dashBoardStackIndex = 3;
 			}
-
-			public function openWindow():void
-			{
-				PopUpManager.createPopUp(this,AddNewStudentPopUp,false);
-			}
-			  
-			
+		
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -100,7 +94,6 @@
 						<s:VGroup id="planningGroup" includeInLayout="false" visible="false" paddingLeft="30" horizontalAlign="left">
 							<s:Button label="Reports " height="30" width="110" click="onReportsClick()" styleName="SubBarButton" />
 							<s:Button label="Expenses" height="30" width="110" click="onExpensesClick()" styleName="SubBarButton"/>
-							<s:Button label="Open Window" height="30" width="110" click="openWindow()" styleName="SubBarButton"/>
 						</s:VGroup>
 				
 					<!--<s:Button label="Add Student" height="50" width="150" click="onAddStudentClick()" styleName="BarButton"/>
@@ -130,10 +123,10 @@
 				<view:ReportsView />
 			</s:NavigatorContent>
 			<s:NavigatorContent>
-				<view:ManageTeacher/>
+				<view:TeacherListView/>
 			</s:NavigatorContent>
 			<s:NavigatorContent>
-				<view:ManageCourse/>
+				<view:CourseListView/>
 			</s:NavigatorContent>
 			<s:NavigatorContent>
 				<view:PlanningBoard/>

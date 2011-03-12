@@ -5,6 +5,7 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	<!-- This class will be removed soon ... all functionality will be moved to other classses . -->
 	<!-- This class uses the Employee.as class included in the same samples folder -->
 	<fx:Script>
 		<![CDATA[

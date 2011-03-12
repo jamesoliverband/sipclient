@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+				xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				
+				layout="absolute" width="300" height="200" 
+				creationComplete="centerWindow()" title="Add Teacher" 
+				showCloseButton="true" close="closeWindow()" >
+	
+<s:Group >
+	
+	<!-- This class uses the Employee.as class included in the same samples folder -->
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.SQLQueries;
+			import com.genius.model.Student;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.formatters.DateFormatter;
+			import mx.managers.PopUpManager;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			// Initialize the database and create table
+			protected function initDatabase():void
+			{
+				// Create a file to hold the database
+				var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+				sipDb = new SQLConnection();
+				sipDb.open(dbFile);
+				
+			}
+			
+			protected function onAddTeacherBtnClick(event:MouseEvent):void
+			{
+				if(txtTeacherName.text == "") {
+					Alert.show("Please Enter Teacher Name")
+				} else {
+					if(btnAddTeacher.label=="Save") {
+						trace(txtTeacherId.text);
+						var id:Number = new Number(txtTeacherId.text)
+						Alert.show("txtCourseId.text - " + id );
+						
+						DataManager.updateTeacher(id, txtTeacherName.text);
+						btnAddTeacher.label = "Add";
+						
+					} else {
+						DataManager.addNewTeacher(txtTeacherName.text);
+						
+					}
+					txtTeacherId.text = "";
+					model.teacherList = DataManager.getTeacherList();
+				}
+				closeWindow();
+			}
+
+			public function centerWindow():void
+			{
+				PopUpManager.centerPopUp(this);
+			}
+			
+			public function closeWindow():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+	
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<s:Group x="10" y="10" width="200" height="130">
+		<mx:Form x="0" y="10">
+			<mx:FormItem label="Teacher Name:">
+				<s:TextInput id="txtTeacherName"/><s:TextInput id="txtTeacherId" visible="false"/>
+			</mx:FormItem>
+			<mx:FormItem>
+				<s:Button id="btnAddTeacher" label="Add" click="onAddTeacherBtnClick(event)"/>
+			</mx:FormItem>
+		</mx:Form> 	
+	</s:Group>
+</s:Group>
+</mx:TitleWindow>

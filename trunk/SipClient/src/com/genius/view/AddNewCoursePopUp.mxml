@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+				xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				
+				layout="absolute" width="300" height="200" 
+				creationComplete="centerWindow()" title="Add Course" 
+				showCloseButton="true" close="closeWindow()" >
+	
+<s:Group >
+	
+	<!-- This class uses the Employee.as class included in the same samples folder -->
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.SQLQueries;
+			import com.genius.model.Student;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.formatters.DateFormatter;
+			import mx.managers.PopUpManager;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			// Initialize the database and create table
+			protected function initDatabase():void
+			{
+				// Create a file to hold the database
+				var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+				sipDb = new SQLConnection();
+				sipDb.open(dbFile);
+				
+			}
+			
+			
+			protected function onAddBtnClick(event:MouseEvent):void
+			{
+				if(txtCourseName.text == "") {
+					Alert.show("Please Enter Course Name")
+				} else {
+					if(btnAddCourse.label=="Save") {
+						trace(txtCourseId.text);
+						var id:Number = new Number(txtCourseId.text)
+						Alert.show("txtCourseId.text - " + id );
+						
+						DataManager.updateCourse(id, txtCourseName.text);
+						btnAddCourse.label = "Add";
+					} else {
+						DataManager.addNewCourse(txtCourseName.text, txtCourseId.text);
+						
+					}
+					txtCourseName.text = "";
+					model.courseList = DataManager.getCourseList();
+				}
+				closeWindow();
+				
+			}
+
+			public function centerWindow():void
+			{
+				PopUpManager.centerPopUp(this);
+			}
+			
+			public function closeWindow():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+	
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<s:Group x="10" y="10" width="200" height="130">
+		<mx:Form x="0" y="20">
+			<mx:FormItem label="Course Name:">
+				<s:TextInput id="txtCourseName"/>
+			</mx:FormItem>
+			<mx:FormItem label="Course Id:">
+				<s:TextInput id="txtCourseId" maxChars="2" toolTip="Enter two char code like 01, 02 etc form amal enter 00"/>
+			</mx:FormItem>
+			<mx:FormItem>
+				<s:Button id="btnAddCourse" label="Add" click="onAddBtnClick(event)"/>
+			</mx:FormItem>
+		</mx:Form> 	
+	</s:Group>
+</s:Group>
+</mx:TitleWindow>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<!-- This class uses the Employee.as class included in the same samples folder -->
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.SQLQueries;
+			
+			import flexunit.framework.Protectable;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
+			
+			protected var sipDb:SQLConnection;
+			
+			public var addTeacherPopup:AddNewTeacherPopUp;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			
+			protected function onEditTeacherBtnClick(event:MouseEvent):void
+			{
+				//deleteStudent(dg.selectedItem as Student);
+				//Alert.show("Edit Click - To Do" + dg.selectedItem.id + "" + dg.selectedItem.coursename);
+				//txtTeacherName.text = dg.selectedItem.teachername;
+				//txtTeacherId.text = dg.selectedItem.id;
+				//btnAddTeacher.label = "Save"
+				
+				//DataManager.updateCourse(id, coursename)
+			}
+			protected function onAddTeacherBtnClick(event:MouseEvent):void 
+			{
+				addTeacherPopup = AddNewTeacherPopUp(PopUpManager.createPopUp(this, AddNewTeacherPopUp, false));
+				
+				// Set the event listeners for the StudentSearchPopUp component. on Search Button
+				addTeacherPopup["btnAddTeacher"].addEventListener("click", updateTeacherList); 
+			}
+			
+			private function updateTeacherList(event:Event):void
+			{
+				model.teacherList = DataManager.getTeacherList();
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<s:VGroup width="501" height="476">
+				<mx:DataGrid id="dg" dataProvider="{model.teacherList}" width="456" rowCount="10" height="191">
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="Teacher ID"/>
+				<mx:DataGridColumn dataField="teachername" headerText="Teacher Name" />
+			</mx:columns>
+		</mx:DataGrid>
+		<s:Button left="10" label="Edit Teacher" height="40" click="onEditTeacherBtnClick(event)" enabled="{dg.selectedIndex > -1}"/>
+		<s:Group>
+			<s:Button left="10" x="200" label="Add Teacher" height="40" click="onAddTeacherBtnClick(event)" />
+			
+		</s:Group>
+	</s:VGroup>
+</s:Group>
