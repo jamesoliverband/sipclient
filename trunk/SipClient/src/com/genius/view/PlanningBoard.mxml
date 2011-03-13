@@ -38,7 +38,7 @@
 		<s:VerticalLayout >
 		</s:VerticalLayout>
 	</s:layout>
-	<s:HGroup>
+	<s:HGroup paddingTop="50">
 		<mx:ColumnChart id="myChart" 
 					  dataProvider="{countList}" 
 					  showDataTips="true" width="483" height="150" 
