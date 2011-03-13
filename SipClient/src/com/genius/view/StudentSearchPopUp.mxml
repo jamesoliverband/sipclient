@@ -93,7 +93,7 @@
 					<s:TextInput id="txtLevel"/>
 				</mx:FormItem>
 				<mx:FormItem>
-					<s:Button id="searchBtn" label="Search" click="onSearchBtnClick(event)"/>
+					<s:Button id="searchBtn" label="Search" height="40" click="onSearchBtnClick(event)"/>
 				</mx:FormItem>
 			</mx:Form>  	
 		</s:Group>

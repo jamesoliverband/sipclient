@@ -74,7 +74,7 @@
 					<s:TextInput id="txtRemarks" />
 				</mx:FormItem>
 				<mx:FormItem>
-					<s:Button id="btnAdd" label="Add" click="onAddBtnClick(event)"/>
+					<s:Button id="btnAdd" label="Add" height="40" click="onAddBtnClick(event)"/>
 				</mx:FormItem>
 			</mx:Form> 	
 		</s:Group>
@@ -85,6 +85,6 @@
 				<mx:DataGridColumn dataField="expensedate" headerText="Date" />
 			</mx:columns>
 		</mx:DataGrid>
-		<s:Button left="10" label="Edit Course" click="onEditBtnClick(event)" enabled="{dg.selectedIndex > -1}"/>
+		<s:Button left="10" label="Edit Course" height="40" click="onEditBtnClick(event)" enabled="{dg.selectedIndex > -1}"/>
 	</s:VGroup>
 </s:Group>

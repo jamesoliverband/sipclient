@@ -98,7 +98,7 @@
 					<mx:DateField id="txtEndDate" width="158"  yearNavigationEnabled="true" formatString="DD-MM-YYYY"/>
 				</mx:FormItem>
 				<mx:FormItem>
-					<s:Button id="addBatchBtn" label="Add Batch" click="onAddBtnClick(event)"/>
+					<s:Button id="addBatchBtn" label="Add Batch" height="40" click="onAddBtnClick(event)"/>
 				</mx:FormItem>
 			</mx:Form>  	
 		</s:Group>

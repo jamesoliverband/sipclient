@@ -53,13 +53,13 @@
 	</s:layout>
 	<s:VGroup width="360" height="280">
 		
-		<s:HGroup><s:Label x="5" width="100" text="BatchId" fontWeight="bold"/><s:Label text="{model.selectedBatch.id}" fontWeight="bold" /></s:HGroup>
-		<s:HGroup><s:Label x="5" width="100" text="Teacher" fontWeight="bold"/><s:Label text="{model.selectedBatch.teachername}" /></s:HGroup>
-		<s:HGroup><s:Label x="5" width="100" text="Days" fontWeight="bold"/><s:Label text="{model.selectedBatch.days}" /></s:HGroup>
-		<s:HGroup><s:Label x="5" width="100" text="Time" fontWeight="bold"/><s:Label text="{model.selectedBatch.time}" /></s:HGroup>
-		<s:HGroup><s:Label x="5" width="100" text="Start Date" fontWeight="bold" /><s:Label text="{model.selectedBatch.startdate}" /></s:HGroup>
-		<s:HGroup><s:Label x="5" width="100" text="End Date" fontWeight="bold"/><s:Label text="{model.selectedBatch.enddate}" /></s:HGroup>
-		<s:HGroup><s:Label x="5" width="100" text="Level" fontWeight="bold" /><s:Label text="{model.selectedBatch.coursename}" /></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="BatchId" styleName="appFontBold"/><s:Label text="{model.selectedBatch.id}" styleName="appFontBold" /></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="Teacher" styleName="appFontBold"/><s:Label text="{model.selectedBatch.teachername}" styleName="appFontNormal"/></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="Days" styleName="appFontBold"/><s:Label text="{model.selectedBatch.days}" styleName="appFontNormal" /></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="Time" styleName="appFontBold"/><s:Label text="{model.selectedBatch.time}" styleName="appFontNormal"/></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="Start Date" styleName="appFontBold" /><s:Label text="{model.selectedBatch.startdate}" styleName="appFontNormal"/></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="End Date" styleName="appFontBold"/><s:Label text="{model.selectedBatch.enddate}" styleName="appFontNormal"/></s:HGroup>
+		<s:HGroup><s:Label x="5" width="100" text="Level" styleName="appFontBold" /><s:Label text="{model.selectedBatch.coursename}" styleName="appFontNormal"/></s:HGroup>
 		
 		<mx:DataGrid id="dgStudents" dataProvider="{model.selectedBatch.studentList}" width="400" rowCount="10">
 			<mx:columns>

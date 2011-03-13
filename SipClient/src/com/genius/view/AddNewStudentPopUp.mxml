@@ -4,7 +4,7 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				
-				layout="absolute" width="400" height="500" 
+				layout="absolute" width="400" height="450" 
 				creationComplete="centerWindow()" title="Add Student" 
 				showCloseButton="true" close="closeWindow()" >
 	
@@ -67,22 +67,9 @@
 				DataManager.addMonthlyCount(monthObj.name,""+ txtEnrolDate.selectedDate.fullYear, student.level);
 				model.monthlyCounts = DataManager.getMonthCounts();
 				
-				resetForm();
+				
 			}
-			
-			public function resetForm():void {
-				txtFirstName.text = "";
-				txtLastName.text="";
-				txtDob.text= "";
-				txtEnrolDate.text= "";
-				cmbLevel.selectedIndex = 0;
-				txtContact1.text= "";
-				txtContact2.text= "";
-				txtContact3.text= "";
-				txtSchoolName.text= "";
-				txtMiddleName.text= "";
-			}
-
+		
 			public function centerWindow():void
 			{
 				PopUpManager.centerPopUp(this);
@@ -101,9 +88,8 @@
 		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
 	</s:layout>
 	<s:VGroup width="360" height="387">
-		<s:Group x="106" y="44" width="379" height="366">
-			<s:Label x="10" y="10" text="Add Student" fontWeight="bold"/>
-			<mx:Form x="0" y="30">
+		<s:Group x="106" y="10" width="379" height="366">
+			<mx:Form x="0" y="0">
 				<mx:FormItem label="First Name:">
 					<s:TextInput id="txtFirstName"/>
 				</mx:FormItem>
@@ -136,7 +122,7 @@
 					<s:TextInput id="txtContact3" restrict="0-9" maxChars="10"/>
 				</mx:FormItem>
 				<mx:FormItem>
-					<s:Button label="Add Student" click="onAddBtnClick(event)"/>
+					<s:Button label="Add Student" height="40" click="onAddBtnClick(event)"/>
 				</mx:FormItem>
 			</mx:Form>  	
 		</s:Group>

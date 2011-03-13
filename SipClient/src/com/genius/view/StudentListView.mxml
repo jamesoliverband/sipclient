@@ -108,7 +108,7 @@
 	<s:NavigatorContent>
 	<s:VGroup width="501" height="476">
 	
-		<s:Label x="10" y="10" text="Student List" fontFamily="Arial" fontWeight="bold"/>
+		<s:Label x="10" y="10" text="Student List" styleName="appFontBold" />
 		
 		<mx:DataGrid id="dg" dataProvider="{students}" width="600" rowCount="25" height="400">
 			<mx:columns>
