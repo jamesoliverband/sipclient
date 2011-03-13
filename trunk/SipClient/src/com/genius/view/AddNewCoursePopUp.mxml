@@ -92,7 +92,7 @@
 				<s:TextInput id="txtCourseId" maxChars="2" toolTip="Enter two char code like 01, 02 etc form amal enter 00"/>
 			</mx:FormItem>
 			<mx:FormItem>
-				<s:Button id="btnAddCourse" label="Add" click="onAddBtnClick(event)"/>
+				<s:Button id="btnAddCourse" label="Add" height="40" click="onAddBtnClick(event)"/>
 			</mx:FormItem>
 		</mx:Form> 	
 	</s:Group>

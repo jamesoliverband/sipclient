@@ -88,7 +88,7 @@
 				<s:TextInput id="txtTeacherName"/><s:TextInput id="txtTeacherId" visible="false"/>
 			</mx:FormItem>
 			<mx:FormItem>
-				<s:Button id="btnAddTeacher" label="Add" click="onAddTeacherBtnClick(event)"/>
+				<s:Button id="btnAddTeacher" label="Add" height="40" click="onAddTeacherBtnClick(event)"/>
 			</mx:FormItem>
 		</mx:Form> 	
 	</s:Group>

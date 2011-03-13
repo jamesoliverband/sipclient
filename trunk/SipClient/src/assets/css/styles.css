@@ -8,6 +8,7 @@ s|WindowedApplication
 {
 	background-alpha: 0;
 	color:#000000;
+	font-family:"Lucida Grande";
 }
 
 
@@ -24,11 +25,10 @@ view|MainWindowView
 	border-thickness: 2;
 	border-alpha: 1;
 	background-color: #f6f6f6;
-	font-family: Arial, sans-serif;
+	font-family:"Lucida Grande";
 	font-lookup: auto;
-	
-	
 }
+
 
 
 view|MainWindowView #titleDisplay
@@ -45,11 +45,12 @@ view|MainWindowView #titleDisplay
 
 s|Button {
 	skin-class: ClassReference("com.genius.view.ui.skin.SipButton");
-	font-size: 12;
+	font-size: 13;
 	font-style: normal;
 	font-weight:bold;
 	font-family: Arial, sans-serif;
 	font-lookup: auto;
+	
 }
 
 .BarButton {
@@ -75,11 +76,24 @@ s|Button {
 {
 	font-size: 11;
 	color:red;
-	font-family: Arial, sans-serif; 
+	font-family:"Lucida Grande"; 
 	font-lookup: auto;
 /*	font-weight:bold;*/
 }
 
+.appFontNormal 
+{
+	
+	font-family:"Calibri";
+	font-size: 12;
+	font-lookup: auto;
+}
+.appFontBold 
+{
+	font-family:"Calibri";
+	font-size: 14;
+	font-weight:bold;
+}
 .infoMsg
 {
 	font-size: 10;
@@ -152,6 +166,9 @@ mx|TitleWindow
 	cornerRadius: 0;
 }
 
+
+
+
 /****************************************************************************************************************
 FILTERS                                                            *
 *****************************************************************************************************************
@@ -176,3 +193,16 @@ FILTERS                                                            *
 	inner: true;
 }
 
+/****************************************************************************************************************
+FONTS                                                              *
+*****************************************************************************************************************
+*/
+@font-face {
+	src:url("assets/fonts/lucidaGrande.swf");
+	fontFamily: "Lucida Grande";
+}
+@font-face {
+	src:url("assets/fonts/lucidaGrande.swf");
+	fontFamily: "Lucida Grande";
+	fontWeight:bold;
+}

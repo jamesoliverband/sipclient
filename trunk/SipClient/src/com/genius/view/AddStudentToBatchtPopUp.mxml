@@ -108,8 +108,8 @@
 	</s:layout>
 	<s:VGroup width="360" height="400">
 		
-		<s:HGroup><s:Label text="BatchId" /><s:Label text="{model.selectedBatch.id}" /></s:HGroup>
-		<s:HGroup><s:Label text="Teacher" /><s:Label text="{model.selectedBatch.teachername}" /></s:HGroup>
+		<s:HGroup><s:Label text="BatchId" styleName="appFontBold"/><s:Label text="{model.selectedBatch.id}" styleName="appFontNormal"/></s:HGroup>
+		<s:HGroup><s:Label text="Teacher" styleName="appFontBold" /><s:Label text="{model.selectedBatch.teachername}" styleName="appFontNormal"/></s:HGroup>
 		<s:Group x="106" y="10" width="379" height="185">
 			<s:Label x="10" y="10" text="Search Student" fontFamily="Arial" fontWeight="bold"/>
 			<mx:Form x="0" y="30">
@@ -124,7 +124,7 @@
 					</mx:ComboBox>
 				</mx:FormItem>
 				<mx:FormItem>
-					<s:Button label="Search" click="onSearchBtnClick(event)"/>
+					<s:Button label="Search" height="40" click="onSearchBtnClick(event)"/>
 				</mx:FormItem>
 			</mx:Form>  	
 		</s:Group>
@@ -141,7 +141,7 @@
 				
 			</s:List>
 		</s:HGroup>
-		<s:Button left="10" label="Add Selected Students"   click="onAddStudentToBatch(event)"/>
+		<s:Button left="10" label="Add Selected Students" height="40"  click="onAddStudentToBatch(event)"/>
 	
 	</s:VGroup>	
 	

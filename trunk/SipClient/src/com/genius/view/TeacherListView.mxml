@@ -57,16 +57,16 @@
 		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
 	</s:layout>
 	<s:VGroup width="501" height="476">
-				<mx:DataGrid id="dg" dataProvider="{model.teacherList}" width="456" rowCount="10" height="191">
+		<s:Label x="10" y="10" text="Teacher List" styleName="appFontBold" />
+				<mx:DataGrid id="dg" dataProvider="{model.teacherList}" width="600" rowCount="20" height="400">
 			<mx:columns>
 				<mx:DataGridColumn dataField="id" headerText="Teacher ID"/>
 				<mx:DataGridColumn dataField="teachername" headerText="Teacher Name" />
 			</mx:columns>
 		</mx:DataGrid>
 		<s:Button left="10" label="Edit Teacher" height="40" click="onEditTeacherBtnClick(event)" enabled="{dg.selectedIndex > -1}"/>
-		<s:Group>
-			<s:Button left="10" x="200" label="Add Teacher" height="40" click="onAddTeacherBtnClick(event)" />
-			
-		</s:Group>
+		<s:HGroup paddingTop="50">
+			<s:Button label="Add Teacher" height="40" click="onAddTeacherBtnClick(event)" />
+		</s:HGroup>
 	</s:VGroup>
 </s:Group>

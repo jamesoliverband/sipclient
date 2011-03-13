@@ -103,6 +103,7 @@
 	<mx:ViewStack id="batchViewStack">
 		<s:NavigatorContent>
 			<s:VGroup width="476" height="387">
+				<s:Label x="10" y="10" text="Batch List" styleName="appFontBold" />
 				
 				<mx:DataGrid id="dg" dataProvider="{model.batchList}" width="600" rowCount="20" height="400">
 					<mx:columns>
