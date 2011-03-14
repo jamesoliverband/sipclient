@@ -80,18 +80,18 @@
 	</fx:Declarations>
 	<s:HGroup width="100%" height="100%">
 		<s:BorderContainer width="150" height="100%" backgroundColor="#000000" backgroundAlpha="0.3">
-			<s:VGroup width="150" height="100%" horizontalAlign="center" paddingTop="80" paddingRight="2" paddingBottom="0">
+			<s:VGroup width="150" height="100%" horizontalAlign="center" paddingTop="80" paddingRight="2" paddingBottom="0" gap="2">
 					<s:Button label="DashBoard" height="50" width="150" click="onHomeClick()" styleName="BarButton" />
 						
 					<s:Button label="Manage" height="50" width="150" click="onManageClick()" styleName="BarButton"/>
-						<s:VGroup id="manageGroup" includeInLayout="false" visible="false" paddingLeft="30" horizontalAlign="left">
+						<s:VGroup id="manageGroup" includeInLayout="false" visible="false" paddingLeft="30" horizontalAlign="left" gap="1">
 							<s:Button label="Student " height="30" width="110" click="onStudentClick()" styleName="SubBarButton" />
 							<s:Button label="Batch" height="30" width="110" click="onBatchClick()" styleName="SubBarButton"/>
 							<s:Button label="Teacher" height="30" width="110" click="onTeacherClick()" styleName="SubBarButton"/>
 							<s:Button label="Course" height="30" width="110" click="onCourseClick()" styleName="SubBarButton"/>
 						</s:VGroup>
 					<s:Button label="Planning" height="50" width="150" click="onPlanningClick()" styleName="BarButton"/>
-						<s:VGroup id="planningGroup" includeInLayout="false" visible="false" paddingLeft="30" horizontalAlign="left">
+						<s:VGroup id="planningGroup" includeInLayout="false" visible="false" paddingLeft="30" horizontalAlign="left" gap="1">
 							<s:Button label="Reports " height="30" width="110" click="onReportsClick()" styleName="SubBarButton" />
 							<s:Button label="Expenses" height="30" width="110" click="onExpensesClick()" styleName="SubBarButton"/>
 						</s:VGroup>
