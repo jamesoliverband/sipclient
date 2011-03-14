@@ -60,7 +60,7 @@
 		<s:Label x="10" y="10" text="Teacher List" styleName="appFontBold" />
 				<mx:DataGrid id="dg" dataProvider="{model.teacherList}" width="600" rowCount="20" height="400">
 			<mx:columns>
-				<mx:DataGridColumn dataField="id" headerText="Teacher ID"/>
+				<mx:DataGridColumn dataField="id" headerText="Teacher ID" width="80" resizable="false" textAlign="left"/>
 				<mx:DataGridColumn dataField="teachername" headerText="Teacher Name" />
 			</mx:columns>
 		</mx:DataGrid>
