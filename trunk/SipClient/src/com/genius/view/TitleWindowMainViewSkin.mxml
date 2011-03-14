@@ -254,9 +254,9 @@ in accordance with the terms of the license agreement accompanying it.
 				
 				<!--- layer 1: title bar highlight @private -->
 	
+				<s:BitmapImage left="0" top="0" bottom="0"  explicitMaxHeight="44" explicitMaxWidth="60" source="@Embed(source='/./assets/images/02.png')"/>
 				
-				
-				<s:BitmapImage left="0" top="0" bottom="0"  explicitMaxHeight="35"  fillMode="scale" explicitMinWidth="900" source="@Embed(source='/./assets/images/panel_bg.png')"/>
+				<s:BitmapImage left="61" top="0" bottom="0"  explicitMaxHeight="44"  fillMode="scale" explicitMinWidth="840" source="@Embed(source='/./assets/images/panel_bg.png')"/>
 				
 				<!--- layer 2: title bar divider @private 
 				<s:Rect id="tbDiv" left="0" right="0" top="0" height="5" topLeftRadiusX="6" topRightRadiusX="6">
@@ -278,7 +278,7 @@ in accordance with the terms of the license agreement accompanying it.
 				<!-- layer 3: text -->
 				<!--- @copy spark.components.Panel#titleDisplay -->
 				<s:Label id="titleDisplay" maxDisplayedLines="1"
-						 left="10" top="1" bottom="0" minHeight="27"
+						 left="65" top="1" bottom="0" minHeight="27"
 						 verticalAlign="middle" />
 				
 				<!-- layer 4: moveArea -->
