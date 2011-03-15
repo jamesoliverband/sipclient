@@ -95,7 +95,7 @@
 			
 			
 			protected function creationCompleteHandler():void {
-				//topBorder.addEventListener(MouseEvent.MOUSE_DOWN, dragWindow);
+				//topBorder.addEventListener(MouseEvent.MOUSE_DOWN, dragWindow); //skinClass="com.genius.view.TitleWindowMainViewSkin"
 			}
 			
 		]]>
@@ -106,7 +106,7 @@
 				   controlBarVisible="false"
 				   width="100%" height="100%"
 				   horizontalCenter="0" verticalCenter="0"
-				   skinClass="com.genius.view.TitleWindowMainViewSkin"
+				   
 				   >
 		<view:DashBoard width="100%" height="100%"/>
 	</view:MainWindowView>

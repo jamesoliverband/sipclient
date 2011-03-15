@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			
+			
+						
+			public function applyOrangeStyle():void {
+				//StyleManager.loadStyleDeclarations("assets/css/style1.css");
+				//IStyleManager2.loadStyleDeclarations2("assets/style1.css",true);
+				styleManager.loadStyleDeclarations2("assets/css/style_orange.swf",true,null,null);
+			}
+			
+			public function applyDefaultStyle():void {
+				styleManager.loadStyleDeclarations2("assets/css/styles.swf",true,null,null);
+			}
+			
+			
+	
+			
+			
+		]]>
+	</fx:Script>
+	
+	<s:Button x="10" y="10" label="Default" height="40" width="110" click="applyDefaultStyle()" />
+	<s:Button x="10" y="300" label="Orange" height="40" width="110" click="applyOrangeStyle()" />
+	<s:Label  x="10" y="100" styleName="appFontBold" maxWidth="700"
+			  text="This is test view. In actual this will contains theme images and clicking on images will change the application theme.
+			  This functionality aim to provide user his/her choice of user interface." />
+	
+	
+</s:Group>
