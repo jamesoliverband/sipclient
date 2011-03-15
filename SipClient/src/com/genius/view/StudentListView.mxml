@@ -50,7 +50,8 @@
 			
 			protected function onAddBtnClick(event:MouseEvent):void
 			{
-				PopUpManager.createPopUp(this, AddNewStudentPopUp, false);
+				var addNewStudentPopUp:AddNewStudentPopUp =  AddNewStudentPopUp(PopUpManager.createPopUp(this, AddNewStudentPopUp, false));
+				addNewStudentPopUp["addBtn"].addEventListener("click", updateListAfterSave); 
 			}
 			
 			public function onClearSearchBtnClick(event:MouseEvent):void 
