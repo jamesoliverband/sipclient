@@ -66,6 +66,7 @@
 				var monthObj:Object = model.monthList.getItemAt(txtEnrolDate.selectedDate.month);
 				DataManager.addMonthlyCount(monthObj.name,""+ txtEnrolDate.selectedDate.fullYear, student.level);
 				model.monthlyCounts = DataManager.getMonthCounts();
+				closeWindow();
 				
 				
 			}
@@ -122,7 +123,7 @@
 					<s:TextInput id="txtContact3" restrict="0-9" maxChars="10"/>
 				</mx:FormItem>
 				<mx:FormItem>
-					<s:Button label="Add Student" height="40" click="onAddBtnClick(event)"/>
+					<s:Button id="addBtn" label="Add Student" height="40" click="onAddBtnClick(event)"/>
 				</mx:FormItem>
 			</mx:Form>  	
 		</s:Group>
