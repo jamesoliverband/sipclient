@@ -18,13 +18,12 @@ s|WindowedApplication
 view|MainWindowView
 {
 	corner-radius: 6;
-	skin-class: ClassReference("com.genius.view.TitleWindowMainViewSkin");
-	title-bar-background-color: #ffffff;
+	skin-class: ClassReference("com.genius.theme.orange.TitleWindowMainViewSkinOrange");
+	title-bar-background-color: #003300;
 	border-alpha: 0;
 /*	border-color: #6d6d6d;*/
 	border-thickness: 2;
 	border-alpha: 1;
-	background-color: #f6f6f6;
 	font-family:"Lucida Grande";
 	font-lookup: auto;
 }
@@ -44,7 +43,7 @@ view|MainWindowView #titleDisplay
 }
 
 s|Button {
-	skin-class: ClassReference("com.genius.view.ui.skin.SipButton");
+	skin-class: ClassReference("com.genius.theme.orange.SipButtonOrange");
 	font-size: 13;
 	font-style: normal;
 	font-weight:bold;
@@ -54,7 +53,7 @@ s|Button {
 }
 
 .BarButton {
-	skin-class: ClassReference("com.genius.view.ui.skin.SipBarButton");
+	skin-class: ClassReference("com.genius.theme.orange.SipBarButtonOrange");
 	
 	font-size: 16;
 	font-style: normal;
@@ -65,13 +64,13 @@ s|Button {
 }
 
 .SubBarButton {
-	skin-class: ClassReference("com.genius.view.ui.skin.SipBarButton");
+	skin-class: ClassReference("com.genius.theme.orange.SipBarButtonOrange");
 	font-size: 14;
 	font-style: normal;
 	font-weight:bold;
 	font-family: Arial, sans-serif;
 	font-lookup: auto;
-	color:black;
+	color: "0xFFFF66";
 }
 .errorMsg
 {
@@ -140,11 +139,11 @@ s|Button {
 mx|TitleWindow
 {
 	titleStyleName: "panelTitle";
-	contentStyleName: contentStyleName;
+	/*contentStyleName: contentStyleName;*/
 	headerHeight:35;
 	
 	backgroundRepeat:repeat;
-	border-background-image:Embed(source='assets/images/panel_bg.png');
+	title-style-name: popupTitle;
 	cornerRadius:8;
 	bottomCornerRadius: 3;
 	filters:dropShadow;
@@ -155,6 +154,11 @@ mx|TitleWindow
 	paddingRight:20;
 	paddingBottom:20;
 }
+.popupTitle
+{
+	background-color: #663D66;
+}
+
 .panelTitle{
 	textAlign:left;
 	fontSize:13;
@@ -162,14 +166,15 @@ mx|TitleWindow
 }
 .contentStyleName
 {
-	skin: ClassReference("com.genius.view.ui.skin.PanelContentSkin");
+	skin: ClassReference("com.genius.theme.orange.PanelContentSkinOrange");
 	filters: contentDropShadow;
 	cornerRadius: 0;
 }
+
 .leftPanelStyle
 {
-	background-color:#000000;
-	background-alpha:0.3;
+	background-color:#FFC266;
+	background-alpha:0.2;
 }
 
 

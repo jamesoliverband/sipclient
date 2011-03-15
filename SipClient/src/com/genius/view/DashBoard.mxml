@@ -11,6 +11,7 @@
 			import com.genius.model.DashBoardStat;
 			
 			import mx.managers.PopUpManager;
+			import mx.styles.StyleManager;
 			
 			[Bindable]
 			private var dashBoardStackIndex:int = 0;
@@ -56,7 +57,15 @@
 					planningGroup.visible = false;
 				}
 			}
-			
+			private function onSettingsClick():void {
+				if (settingsGroup.visible == false ) {
+					settingsGroup.includeInLayout=true;
+					settingsGroup.visible = true;
+				} else {
+					settingsGroup.includeInLayout=false;
+					settingsGroup.visible = false;
+				}
+			}
 			private function onSearchClick():void {
 				dashBoardStackIndex = 2;
 			}
@@ -67,11 +76,11 @@
 			private function onExpensesClick():void {
 				dashBoardStackIndex = 9;
 			}
-			
-			private function onSettingsClick():void {
-				dashBoardStackIndex = 3;
+			private function onAppearanceClick():void{
+				dashBoardStackIndex = 10;
 			}
-		
+			
+
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -79,7 +88,7 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<s:HGroup width="100%" height="100%">
-		<s:BorderContainer width="150" height="100%" backgroundColor="#000000" backgroundAlpha="0.3">
+		<s:BorderContainer id="leftPanel" width="150" height="100%" styleName="leftPanelStyle">
 			<s:VGroup width="150" height="100%" horizontalAlign="center" paddingTop="80" paddingRight="2" paddingBottom="0" gap="2">
 					<s:Button label="DashBoard" height="50" width="150" click="onHomeClick()" styleName="BarButton" />
 						
@@ -95,6 +104,11 @@
 							<s:Button label="Reports " height="30" width="110" click="onReportsClick()" styleName="SubBarButton" />
 							<s:Button label="Expenses" height="30" width="110" click="onExpensesClick()" styleName="SubBarButton"/>
 						</s:VGroup>
+				
+					<s:Button label="Settings" height="50" width="150" click="onSettingsClick()" styleName="BarButton"/>
+					<s:VGroup id="settingsGroup" includeInLayout="false" visible="false" paddingLeft="30" horizontalAlign="left" gap="1">
+						<s:Button label="Appearance" height="30" width="110" click="onAppearanceClick()" styleName="SubBarButton"/>
+					</s:VGroup>
 				
 					<!--<s:Button label="Add Student" height="50" width="150" click="onAddStudentClick()" styleName="BarButton"/>
 					<s:Button label="Add Batch" height="50" width="150" click="onAddBatchClick()" styleName="BarButton"/>
@@ -133,6 +147,9 @@
 			</s:NavigatorContent>
 			<s:NavigatorContent>
 				<view:ManageExpenses/>
+			</s:NavigatorContent>
+			<s:NavigatorContent>
+				<view:ApperanceSettingView/>
 			</s:NavigatorContent>
 		</mx:ViewStack>
 	</s:HGroup>
