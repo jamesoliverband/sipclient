@@ -5,12 +5,11 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				
 				layout="absolute" width="350" height="350" 
-				creationComplete="centerWindow()" title="Add Teacher" 
+				creationComplete="centerWindow()" title="Edit Teacher" 
 				showCloseButton="true" close="closeWindow()" >
 	
 <s:Group >
 	
-	<!-- This class uses the Employee.as class included in the same samples folder -->
 	<fx:Script>
 		<![CDATA[
 			import com.genius.core.DataManager;
@@ -42,26 +41,32 @@
 				
 			}
 			
-			protected function onAddTeacherBtnClick(event:MouseEvent):void
+			protected function onSaveBtnClick(event:MouseEvent):void
 			{
+				//var selectedStudentId:String = dg.selectedItem.id;
+				//model.currentStudent = DataManager.getStudentForId(selectedStudentId);
+				//DataManager.updateStudent(student);
+				
 				if(txtTeacherName.text== "" || txtMobile.text == "") {
 					
-					Alert.show("Please enter at least Name and Mobile Number. ");
+					Alert.show("Please enter valid data for all required fields. ");
 					return;
 				}
 				var teacher:Teacher = new Teacher();
+				teacher.id = lblTeacherId.text;
 				teacher.teachername = txtTeacherName.text;
 				teacher.dob = txtDob.text;
+				teacher.qualification = txtQualification.text;
 				teacher.experience = txtExperience.text;
 				teacher.mobile = txtMobile.text;
 				teacher.address = txtAddress.text;
-				teacher.qualification = txtQualification.text;
 				
-				DataManager.addNewTeacher(teacher);
-				
+				DataManager.updateTeacher(teacher);
+				model.currentStudent = null;
 				closeWindow();
+				Alert.show("Changes Saved Successfully");
 			}
-
+			
 			public function centerWindow():void
 			{
 				PopUpManager.centerPopUp(this);
@@ -76,37 +81,42 @@
 		]]>
 	</fx:Script>
 	
+	
 	<s:layout>
 		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
 	</s:layout>
-	<s:Group x="10" y="0" width="200" height="130">
+	<s:Group x="10" y="10" width="200" height="130">
 		<mx:Form x="0" y="10">
+			<mx:Form x="0" y="10">
+				<mx:FormItem label="Teacher Id:">
+					<s:Label id="lblTeacherId" text="{model.selectedTeacher.id}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Teacher Name:">
+					<s:TextInput id="txtTeacherName" text="{model.selectedTeacher.teachername}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Date of Birth:">
+					<mx:DateField id="txtDob" width="158" yearNavigationEnabled="true" formatString="DD-MM-YYYY" text="{model.selectedTeacher.dob}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Qualification:">
+					<s:TextInput id="txtQualification" text="{model.selectedTeacher.qualification}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Address:">
+					<s:TextInput id="txtAddress" text="{model.selectedTeacher.address}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Contact Number:">
+					<s:TextInput id="txtMobile" text="{model.selectedTeacher.mobile}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Experience:">
+					<s:TextInput id="txtExperience" text="{model.selectedTeacher.experience}"/>
+				</mx:FormItem>
+				
+				<mx:FormItem>
+					<s:Button id="saveBtn" label="Save Changes" height="40" click="onSaveBtnClick(event)"/>
+				</mx:FormItem>
+			</mx:Form>
 			
-			<mx:FormItem label="Teacher Name:">
-				<s:TextInput id="txtTeacherName"/>
-			</mx:FormItem>
-			<mx:FormItem label="Date of Birth:">
-				<mx:DateField id="txtDob" width="158" yearNavigationEnabled="true" formatString="DD-MM-YYYY"/>
-			</mx:FormItem>
-			<mx:FormItem label="Qualification:">
-				<s:TextInput id="txtQualification"/>
-			</mx:FormItem>
-			<mx:FormItem label="Address:">
-				<s:TextInput id="txtAddress"/>
-			</mx:FormItem>
-			<mx:FormItem label="Contact Number:">
-				<s:TextInput id="txtMobile"/>
-			</mx:FormItem>
-			<mx:FormItem label="Experience:">
-				<s:TextInput id="txtExperience"/>
-			</mx:FormItem>
-			<mx:FormItem >
-				<s:TextInput id="txtTeacherId" visible="false"/>
-			</mx:FormItem>
-			<mx:FormItem>
-				<s:Button id="btnAddTeacher" label="Add" height="40" click="onAddTeacherBtnClick(event)"/>
-			</mx:FormItem>
 		</mx:Form> 	
 	</s:Group>
+	
 </s:Group>
 </mx:TitleWindow>

@@ -53,10 +53,11 @@ package com.genius.model
 		public static var I_NEW_COURSES:String = "INSERT into course (id, coursename) values(?,?)";
 		public static var U_COURSE:String = "update course set coursename=? where id=?";
 		
-		public static var C_TEACHER:String = "CREATE TABLE IF NOT EXISTS teacher ( id INTEGER PRIMARY KEY AUTOINCREMENT, teachername TEXT)";
+		public static var C_TEACHER:String = "CREATE TABLE IF NOT EXISTS teacher ( id INTEGER PRIMARY KEY AUTOINCREMENT, teachername TEXT, dob TEXT, qualification TEXT, address TEXT, experience TEXT, mobile TEXT)";
 		public static var S_GET_TEACHERS:String = "select * from teacher";
-		public static var I_NEW_TEACHER:String = "INSERT into teacher (teachername) values(?)";
-		public static var U_TEACHER:String = "update teacher set teachername=? where id=?";
+		public static var I_NEW_TEACHER:String = "INSERT into teacher (teachername, dob, qualification, address, experience, mobile) values(?,?,?,?,?,?)";
+		public static var U_TEACHER:String = "update teacher set teachername=?, dob=?, qualification=?, address=?, experience=? , mobile =? where id=?";
+		public static var S_TEACHER_FOR_ID:String = "SELECT * from teacher where id = ?";
 
 
 		public static var C_STD_FEES:String = "CREATE TABLE IF NOT EXISTS student_fees ( id INTEGER PRIMARY KEY AUTOINCREMENT, studentid Text, cousename Text, amount FLOAT, discount FLOAT, paymentdate TEXT, remarks Text)";

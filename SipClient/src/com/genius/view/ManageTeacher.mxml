@@ -33,11 +33,11 @@
 						var id:Number = new Number(txtTeacherId.text)
 						Alert.show("txtCourseId.text - " + id );
 						
-						DataManager.updateTeacher(id, txtTeacherName.text);
+						//DataManager.updateTeacher(id, txtTeacherName.text);
 						btnAddTeacher.label = "Add";
 						
 					} else {
-						DataManager.addNewTeacher(txtTeacherName.text);
+						//DataManager.addNewTeacher(txtTeacherName.text);
 						
 					}
 					txtTeacherId.text = "";

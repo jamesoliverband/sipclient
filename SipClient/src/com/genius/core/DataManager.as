@@ -4,6 +4,7 @@ package com.genius.core
 	import com.genius.model.Batch;
 	import com.genius.model.SQLQueries;
 	import com.genius.model.Student;
+	import com.genius.model.Teacher;
 	
 	import flash.data.SQLConnection;
 	import flash.data.SQLStatement;
@@ -281,22 +282,29 @@ package com.genius.core
 		}
 		
 		// Insert a row into the Student table
-		public static function addNewTeacher(teacherName:String):void
+		public static function addNewTeacher(teacher:Teacher):void
 		{
 			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
 			var sipDb:SQLConnection = new SQLConnection();
 			sipDb.open(dbFile);
-			
+						
 			var stmt:SQLStatement = new SQLStatement();
 			stmt.sqlConnection = sipDb;
 			stmt.text = SQLQueries.I_NEW_TEACHER; 
-			stmt.parameters[0] = teacherName;
-			
+		
+			stmt.parameters[0] = teacher.teachername;
+			stmt.parameters[1] = teacher.dob;
+			stmt.parameters[2] = teacher.qualification;
+			stmt.parameters[3] = teacher.address;
+			stmt.parameters[4] = teacher.experience;
+			stmt.parameters[5] = teacher.mobile;
+				
 			stmt.execute();
+			
 		}
 		
 		// Insert a row into the Student table
-		public static function updateTeacher(teacherId:Number, teacherName:String):void
+		public static function updateTeacher(teacher:Teacher):void
 		{
 			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
 			var sipDb:SQLConnection = new SQLConnection();
@@ -305,10 +313,16 @@ package com.genius.core
 			var stmt:SQLStatement = new SQLStatement();
 			stmt.sqlConnection = sipDb;
 			stmt.text = SQLQueries.U_TEACHER; 
-			stmt.parameters[0] = teacherName;
-			stmt.parameters[1] = teacherId;
-			//trace("courseId" + courseId);
+			stmt.parameters[0] = teacher.teachername;
+			stmt.parameters[1] = teacher.dob;
+			stmt.parameters[2] = teacher.qualification;
+			stmt.parameters[3] = teacher.address;
+			stmt.parameters[4] = teacher.experience;
+			stmt.parameters[5] = teacher.mobile;
+			stmt.parameters[6] = teacher.id;
+			
 			stmt.execute();
+			
 		}
 		
 		// Insert a row into the Student table
@@ -465,6 +479,28 @@ package com.genius.core
 			}
 			
 			//return courses;
+		}
+		
+		public static function getTeacherForId(teacherId:String) : Teacher {
+			
+			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+			var sipDb:SQLConnection = new SQLConnection();
+			sipDb.open(dbFile);
+			
+			// Retrieve students with a Select all call
+			var stmt:SQLStatement = new SQLStatement();
+			stmt.itemClass = Teacher;
+			stmt.sqlConnection = sipDb;
+			
+			stmt.text = SQLQueries.S_TEACHER_FOR_ID;
+			stmt.parameters[0] =  teacherId ;
+			stmt.execute();
+			var teacher:ArrayCollection = new ArrayCollection(stmt.getResult().data);
+			if(teacher!=null) {
+				return teacher.getItemAt(0) as Teacher;
+			} else {
+				return null;
+			}
 		}
 		
 		
