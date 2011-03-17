@@ -11,6 +11,7 @@
 			import com.genius.core.DataManager;
 			import com.genius.model.ApplicationModel;
 			import com.genius.model.SQLQueries;
+			import com.genius.view.EditTeacherPopUp;
 			
 			import flexunit.framework.Protectable;
 			
@@ -19,6 +20,7 @@
 			import mx.managers.PopUpManager;
 			
 			protected var sipDb:SQLConnection;
+			public var editTeacherPopup:EditTeacherPopUp;
 			
 			public var addTeacherPopup:AddNewTeacherPopUp;
 			
@@ -28,13 +30,16 @@
 			
 			protected function onEditTeacherBtnClick(event:MouseEvent):void
 			{
-				//deleteStudent(dg.selectedItem as Student);
-				//Alert.show("Edit Click - To Do" + dg.selectedItem.id + "" + dg.selectedItem.coursename);
-				//txtTeacherName.text = dg.selectedItem.teachername;
-				//txtTeacherId.text = dg.selectedItem.id;
-				//btnAddTeacher.label = "Save"
-				
-				//DataManager.updateCourse(id, coursename)
+				var selectedTeacherId:String = dg.selectedItem.id;
+				model.selectedTeacher = DataManager.getTeacherForId(selectedTeacherId);
+			
+				editTeacherPopup = EditTeacherPopUp(PopUpManager.createPopUp(this, EditTeacherPopUp, false));
+				editTeacherPopup["saveBtn"].addEventListener("click", updateListAfterSave); 
+			}
+			
+			private function updateListAfterSave(event:Event):void
+			{
+				model.teacherList = DataManager.getTeacherList();
 			}
 			protected function onAddTeacherBtnClick(event:MouseEvent):void 
 			{
@@ -58,10 +63,15 @@
 	</s:layout>
 	<s:VGroup width="501" height="476">
 		<s:Label x="10" y="10" text="Teacher List" styleName="appFontBold" />
-				<mx:DataGrid id="dg" dataProvider="{model.teacherList}" width="600" rowCount="20" height="400">
+				<mx:DataGrid id="dg" dataProvider="{model.teacherList}" width="680" rowCount="20" height="400">
 			<mx:columns>
 				<mx:DataGridColumn dataField="id" headerText="Teacher ID" width="80" resizable="false" textAlign="left"/>
 				<mx:DataGridColumn dataField="teachername" headerText="Teacher Name" />
+				<mx:DataGridColumn dataField="dob" headerText="Date of Birth" />
+				<mx:DataGridColumn dataField="qualification" headerText="Qualification" />
+				<mx:DataGridColumn dataField="address" headerText="Address" />
+				<mx:DataGridColumn dataField="experience" headerText="Experience" />
+				<mx:DataGridColumn dataField="mobile" headerText="Contact Number" />
 			</mx:columns>
 		</mx:DataGrid>
 		<s:Button left="10" label="Edit Teacher" height="40" click="onEditTeacherBtnClick(event)" enabled="{dg.selectedIndex > -1}"/>
