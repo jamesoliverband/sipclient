@@ -15,6 +15,7 @@
 			import mx.managers.PopUpManager;
 			
 			public var addNewBatchPopup:AddNewBatchPopUp;
+			public var editBatchPopup:EditBatchPopUp;
 			
 			protected var sipDb:SQLConnection;
 			
@@ -52,12 +53,15 @@
 			
 			protected function onEditBatchBtnClick(event:MouseEvent):void
 			{
-				//deleteStudent(dg.selectedItem as Student);
-				//Alert.show("Edit Click - To Do" + dg.selectedItem.id + "" + dg.selectedItem.coursename);
-				//txtTeacherName.text = dg.selectedItem.teachername;
-				//txtTeacherId.text = dg.selectedItem.id;
-				//btnAddTeacher.label = "Save"
-				//DataManager.updateCourse(id, coursename)
+				var selectedBatchId:String = dg.selectedItem.id;
+				model.selectedBatch = DataManager.getBatchForId(selectedBatchId);
+				
+				editBatchPopup = EditBatchPopUp(PopUpManager.createPopUp(this, EditBatchPopUp, false));
+				editBatchPopup["saveBtn"].addEventListener("click", updateListAfterSave); 
+			}
+			private function updateListAfterSave(event:Event):void
+			{
+				model.batchList = DataManager.getBatchList();
 			}
 			
 			protected function onMarkCompleteClick(event:MouseEvent):void
