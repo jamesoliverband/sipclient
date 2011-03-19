@@ -37,6 +37,9 @@ package com.genius.model
 		public static var S_ELIGIBLE_STUDENTS_FOR_BATCH:String = "select s.id, s.firstname, s.lastname from student where level = ?";
 		public static var I_STUDENT_BATCH:String = "INSERT into student_batch (studentid,batchid) values(?,?)";
 		public static var S_BATCH_STUDENT_LIST = "select * from students where id in (select studentid from student_batch where batchid = ? )"; 
+		public static var U_BATCH:String = "update batch set teachername=?, coursename=?, startdate=?, enddate=?, days=? , time =? where id=?";
+		public static var S_BATCH_FOR_ID:String = "SELECT * from batch where id = ?";
+		public static var S_GET_BATCH_LIST:String = "select * from batch";
 			
 		
 		public static var C_MONTH_VIEW:String = "CREATE TABLE IF NOT EXISTS month_view ( id INTEGER PRIMARY KEY AUTOINCREMENT, month TEXT, year TEXT, level Text, plan INTEGER, actual INTEGER)";

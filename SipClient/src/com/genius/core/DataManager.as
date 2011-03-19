@@ -329,6 +329,27 @@ package com.genius.core
 			
 		}
 		
+		public static function updateBatch(bacth:Batch):void
+		{
+			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+			var sipDb:SQLConnection = new SQLConnection();
+			sipDb.open(dbFile);
+			
+			var stmt:SQLStatement = new SQLStatement();
+			stmt.sqlConnection = sipDb;
+			stmt.text = SQLQueries.U_BATCH; 
+			stmt.parameters[0] = bacth.teachername;
+			stmt.parameters[1] = bacth.coursename;
+			stmt.parameters[2] = bacth.startdate;
+			stmt.parameters[3] = bacth.enddate;
+			stmt.parameters[4] = bacth.days;
+			stmt.parameters[5] = bacth.time;
+			stmt.parameters[6] = bacth.id;
+			
+			stmt.execute();
+			
+		}
+		
 		// Insert a row into the Student table
 		public static function markBatchComplete(batchId:String):void
 		{
@@ -527,6 +548,45 @@ package com.genius.core
 			}
 		}
 		
+		public static function getBatchForId(batchId:String) : Batch {
+			
+			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+			var sipDb:SQLConnection = new SQLConnection();
+			sipDb.open(dbFile);
+			
+			var stmt:SQLStatement = new SQLStatement();
+			stmt.itemClass = Batch;
+			stmt.sqlConnection = sipDb;
+			
+			stmt.text = SQLQueries.S_BATCH_FOR_ID;
+			stmt.parameters[0] =  batchId ;
+			stmt.execute();
+			var batch:ArrayCollection = new ArrayCollection(stmt.getResult().data);
+			if(batch!=null) {
+				return batch.getItemAt(0) as Batch;
+			} else {
+				return null;
+			}
+		}
+		
+		public static function getBatchList() : ArrayCollection {
+			
+			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+			var sipDb:SQLConnection = new SQLConnection();
+			sipDb.open(dbFile);
+			
+			var stmt:SQLStatement = new SQLStatement();
+			stmt.sqlConnection = sipDb;
+			
+			stmt.text = SQLQueries.S_GET_BATCH_LIST;
+			stmt.execute();
+			var batch:ArrayCollection = new ArrayCollection(stmt.getResult().data);
+			if(batch!=null) {
+				trace(batch.length);
+			}
+			
+			return batch;
+		}
 		
 		// Retrieve students with a Select all call
 		public static function searchStudents(student:Student):ArrayCollection
