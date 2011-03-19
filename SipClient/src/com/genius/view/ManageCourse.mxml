@@ -31,10 +31,10 @@
 						var id:Number = new Number(txtCourseId.text)
 						Alert.show("txtCourseId.text - " + id );
 						
-						DataManager.updateCourse(id, txtCourseName.text);
+						//DataManager.updateCourse(id, txtCourseName.text);
 						btnAdd.label = "Add";
 					} else {
-						DataManager.addNewCourse(txtCourseName.text, txtCourseId.text);
+						//DataManager.addNewCourse(txtCourseName.text, txtCourseId.text);
 						
 					}
 					txtCourseName.text = "";

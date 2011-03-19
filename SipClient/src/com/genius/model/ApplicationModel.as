@@ -53,6 +53,7 @@ package com.genius.model
 		public var currentStudent:Student;
 		public var selectedBatch:Batch;
 		public var selectedTeacher:Teacher;
+		public var selectedCourse:Course;
 		
 		
 		

@@ -2,6 +2,7 @@ package com.genius.core
 {
 	import com.genius.model.ApplicationModel;
 	import com.genius.model.Batch;
+	import com.genius.model.Course;
 	import com.genius.model.SQLQueries;
 	import com.genius.model.Student;
 	import com.genius.model.Teacher;
@@ -172,7 +173,7 @@ package com.genius.core
 		}
 
 		// Insert a row into the Student table
-		public static function addNewCourse(courseName:String, id:String):void
+		public static function addNewCourse(course:Course):void
 		{
 			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
 			var sipDb:SQLConnection = new SQLConnection();
@@ -181,11 +182,13 @@ package com.genius.core
 			var stmt:SQLStatement = new SQLStatement();
 			stmt.sqlConnection = sipDb;
 			stmt.text = SQLQueries.I_NEW_COURSES; 
-			stmt.parameters[0] = id;
-			stmt.parameters[1] = courseName;
 			
-			
+			stmt.parameters[0] = course.id;
+			stmt.parameters[1] = course.coursename;
+			stmt.parameters[2] = course.description;
+						
 			stmt.execute();
+			
 		}
 		
 		
@@ -266,7 +269,7 @@ package com.genius.core
 		
 		
 		// Insert a row into the Student table
-		public static function updateCourse(courseId:Number, courseName:String):void
+		public static function updateCourse(course:Course):void
 		{
 			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
 			var sipDb:SQLConnection = new SQLConnection();
@@ -275,9 +278,10 @@ package com.genius.core
 			var stmt:SQLStatement = new SQLStatement();
 			stmt.sqlConnection = sipDb;
 			stmt.text = SQLQueries.U_COURSE; 
-			stmt.parameters[0] = courseName;
-			stmt.parameters[1] = courseId;
-			trace("courseId" + courseId);
+			stmt.parameters[0] = course.coursename;
+			stmt.parameters[1] = course.description;
+			stmt.parameters[2] = course.id;
+			trace("courseId" + course.id);
 			stmt.execute();
 		}
 		
@@ -487,7 +491,6 @@ package com.genius.core
 			var sipDb:SQLConnection = new SQLConnection();
 			sipDb.open(dbFile);
 			
-			// Retrieve students with a Select all call
 			var stmt:SQLStatement = new SQLStatement();
 			stmt.itemClass = Teacher;
 			stmt.sqlConnection = sipDb;
@@ -498,6 +501,27 @@ package com.genius.core
 			var teacher:ArrayCollection = new ArrayCollection(stmt.getResult().data);
 			if(teacher!=null) {
 				return teacher.getItemAt(0) as Teacher;
+			} else {
+				return null;
+			}
+		}
+		
+		public static function getCourseForId(courseId:String) : Course {
+			
+			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+			var sipDb:SQLConnection = new SQLConnection();
+			sipDb.open(dbFile);
+			
+			var stmt:SQLStatement = new SQLStatement();
+			stmt.itemClass = Course;
+			stmt.sqlConnection = sipDb;
+			
+			stmt.text = SQLQueries.S_COURSE_FOR_ID;
+			stmt.parameters[0] =  courseId ;
+			stmt.execute();
+			var course:ArrayCollection = new ArrayCollection(stmt.getResult().data);
+			if(course!=null) {
+				return course.getItemAt(0) as Course;
 			} else {
 				return null;
 			}

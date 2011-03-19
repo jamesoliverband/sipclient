@@ -21,15 +21,26 @@
 			
 			protected var sipDb:SQLConnection;
 			
+			public var editCoursePopup:EditCoursePopUp;
+			
+			
 			[Bindable]
 			private static var model:ApplicationModel = ApplicationModel.instance;
 			
 			
 			protected function onEditBtnClick(event:MouseEvent):void
 			{
-				//txtCourseName.text = dg.selectedItem.coursename;
-				//txtCourseId.text = dg.selectedItem.id;
-				//btnAdd.label = "Save"
+				var selectedCourseId:String = dg.selectedItem.id;
+				model.selectedCourse = DataManager.getCourseForId(selectedCourseId);
+				
+				editCoursePopup = EditCoursePopUp(PopUpManager.createPopUp(this, EditCoursePopUp, false));
+				editCoursePopup["saveBtn"].addEventListener("click", updateListAfterSave); 
+			}
+			
+			private function updateListAfterSave(event:Event):void
+			{
+				model.courseList = DataManager.getCourseList();
+			
 			}
 			
 			protected function onAddTeacherBtnClick(event:MouseEvent):void 
@@ -42,7 +53,7 @@
 			
 			private function updateCourseList(event:Event):void
 			{
-				model.teacherList = DataManager.getTeacherList();
+				model.courseList = DataManager.getCourseList();
 			}
 			
 			
@@ -57,8 +68,9 @@
 		
 		<mx:DataGrid id="dg" dataProvider="{model.courseList}" width="600" rowCount="20" height="400">
 			<mx:columns>
-				<mx:DataGridColumn dataField="id" headerText="Course ID"/>
-				<mx:DataGridColumn dataField="coursename" headerText="Course Name" />
+				<mx:DataGridColumn dataField="id" headerText="Course ID" width="100"/>
+				<mx:DataGridColumn dataField="coursename" headerText="Course Name" width="200"/>
+				<mx:DataGridColumn dataField="description" headerText="Description" />
 			</mx:columns>
 		</mx:DataGrid>
 		<s:Button left="10" label="Edit Course" height="40" click="onEditBtnClick(event)" enabled="{dg.selectedIndex > -1}"/>

@@ -5,12 +5,11 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				
 				layout="absolute" width="300" height="250" 
-				creationComplete="centerWindow()" title="Add Course" 
+				creationComplete="centerWindow()" title="Edit Course" 
 				showCloseButton="true" close="closeWindow()" >
 	
 <s:Group >
 	
-	<!-- This class uses the Employee.as class included in the same samples folder -->
 	<fx:Script>
 		<![CDATA[
 			import com.genius.core.DataManager;
@@ -39,24 +38,24 @@
 				
 			}
 			
-			
-			protected function onAddBtnClick(event:MouseEvent):void
+			protected function onSaveBtnClick(event:MouseEvent):void
 			{
-				if(txtCourseName.text== "" ) {
-					Alert.show("Please Enter Course Name.");
+				if(txtCourseName.text== "") {
+					
+					Alert.show("Course Name should not be left blank. ");
 					return;
 				}
 				var course:Course = new Course();
-				course.id = txtCourseId.text;
+				course.id = lblcourseId.text;
 				course.coursename = txtCourseName.text;
 				course.description = txtDescription.text;
 								
-				DataManager.addNewCourse(course);
+				DataManager.updateCourse(course);
 				
 				closeWindow();
-				
+				Alert.show("Changes Saved Successfully");
 			}
-
+			
 			public function centerWindow():void
 			{
 				PopUpManager.centerPopUp(this);
@@ -71,24 +70,28 @@
 		]]>
 	</fx:Script>
 	
+	
 	<s:layout>
 		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
 	</s:layout>
 	<s:Group x="10" y="10" width="200" height="130">
-		<mx:Form x="0" y="20">
-			<mx:FormItem label="Course Id:">
-				<s:TextInput id="txtCourseId" maxChars="2" toolTip="Enter two char code like 01, 02 etc form amal enter 00"/>
-			</mx:FormItem>
-			<mx:FormItem label="Course Name:">
-				<s:TextInput id="txtCourseName"/>
-			</mx:FormItem>
-			<mx:FormItem label="Description :">
-				<s:TextInput id="txtDescription"/>
-			</mx:FormItem>
-			<mx:FormItem>
-				<s:Button id="btnAddCourse" label="Add" height="40" click="onAddBtnClick(event)"/>
-			</mx:FormItem>
+		<mx:Form x="0" y="10">
+				<mx:Form x="0" y="20">
+					<mx:FormItem label="Course Id:">
+						<s:Label id="lblcourseId" text="{model.selectedCourse.id}"/>
+					</mx:FormItem>
+					<mx:FormItem label="Course Name:">
+						<s:TextInput id="txtCourseName" text="{model.selectedCourse.coursename}"/>
+					</mx:FormItem>
+					<mx:FormItem label="Description :">
+						<s:TextInput id="txtDescription" text="{model.selectedCourse.description}"/>
+					</mx:FormItem>
+					<mx:FormItem>
+						<s:Button id="saveBtn" label="Save Changes" height="40" click="onSaveBtnClick(event)"/>
+					</mx:FormItem>
+				</mx:Form> 	
 		</mx:Form> 	
 	</s:Group>
+	
 </s:Group>
 </mx:TitleWindow>
