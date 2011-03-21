@@ -25,6 +25,28 @@
 				
 			}
 			
+			private function onStudentClick():void {
+				dashBoardStackIndex = 1;	
+			}
+			private function onBatchClick():void {
+				dashBoardStackIndex = 2;	
+			}
+			private function onTeacherClick():void {
+				dashBoardStackIndex = 3;	
+			}
+			private function onCourseClick():void {
+				dashBoardStackIndex = 4;	
+			}
+			private function onReportsClick():void {
+				dashBoardStackIndex = 5;
+			}
+			private function onExpensesClick():void {
+				dashBoardStackIndex = 6;
+			}
+			private function onAppearanceClick():void{
+				dashBoardStackIndex = 7;
+			}
+			
 			private function onManageClick():void {
 				if (manageGroup.visible == false ) {
 					manageGroup.includeInLayout=true;
@@ -33,19 +55,6 @@
 					manageGroup.includeInLayout=false;
 					manageGroup.visible = false;
 				}
-			}
-			
-			private function onStudentClick():void {
-				dashBoardStackIndex = 1;	
-			}
-			private function onBatchClick():void {
-				dashBoardStackIndex = 4;	
-			}
-			private function onTeacherClick():void {
-				dashBoardStackIndex = 6;	
-			}
-			private function onCourseClick():void {
-				dashBoardStackIndex = 7;	
 			}
 			
 			private function onPlanningClick():void {
@@ -66,19 +75,8 @@
 					settingsGroup.visible = false;
 				}
 			}
-			private function onSearchClick():void {
-				dashBoardStackIndex = 2;
-			}
 			
-			private function onReportsClick():void {
-				dashBoardStackIndex = 8;
-			}
-			private function onExpensesClick():void {
-				dashBoardStackIndex = 9;
-			}
-			private function onAppearanceClick():void{
-				dashBoardStackIndex = 10;
-			}
+		
 			
 
 		]]>
@@ -124,17 +122,9 @@
 			<s:NavigatorContent>
 				<view:StudentListView />
 			</s:NavigatorContent>
-			<s:NavigatorContent>
-				<view:SearchStudent />
-			</s:NavigatorContent>
-			<s:NavigatorContent>
-				<view:SettingsView />
-			</s:NavigatorContent>
+			
 			<s:NavigatorContent>
 				<view:BatchListView />
-			</s:NavigatorContent>
-			<s:NavigatorContent>
-				<view:ReportsView />
 			</s:NavigatorContent>
 			<s:NavigatorContent>
 				<view:TeacherListView/>
