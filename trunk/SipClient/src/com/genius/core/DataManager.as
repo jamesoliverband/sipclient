@@ -96,12 +96,8 @@ package com.genius.core
 			stmt.text = SQLQueries.I_STUDENT; 
 			
 			var date:Date = new Date();
-			//date.fullYear + date.m
-			var studentId:String = student.id;
-			if(studentId == null || studentId == ""){
-				studentId = generateStudentId();
-			}
-			stmt.parameters[0] = studentId;
+			
+			stmt.parameters[0] = student.id;
 			stmt.parameters[1] = student.firstname;
 			stmt.parameters[2] = student.lastname;
 			stmt.parameters[3] = student.middlename;
@@ -113,7 +109,7 @@ package com.genius.core
 			stmt.parameters[9] = student.contactnumber3;
 			stmt.parameters[10] = student.schoolname;			
 			stmt.execute();
-			return studentId;
+			return student.id;
 		}
 		
 		// Insert a row into the Student table
@@ -391,44 +387,6 @@ package com.genius.core
 		}
 
 
-		
-	
-		
-		// Insert a row into the Student table
-		public static function generateStudentId():String
-		{
-			var branchId:String = model.branchId;
-			var date:Date = new Date();
-			var year:String = date.fullYear + "";
-			//var month:String = date.month
-		
-			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
-			var sipDb:SQLConnection = new SQLConnection();
-			sipDb.open(dbFile);
-			
-			var stmt:SQLStatement = new SQLStatement();
-			stmt.sqlConnection = sipDb;
-			
-			stmt.text = "Select count(*) as count from students where enrolldate like '%" + year + "'";
-			//stmt.text = "Select count(*) as count from students";
-			stmt.execute();
-			
-			var count:uint = 0;
-			var data:Array = stmt.getResult().data;
-			if(data!= null && data.length > 0) {
-				count = data.pop().count;
-			}
-			var nextCount:uint = count+1;
-			var prefix:String = "";
-			if(nextCount>9) {
-				if(nextCount < 100) {
-					prefix="0"
-				}
-			} else {
-				prefix="00"
-			}
-			return branchId + year + prefix + nextCount; 
-		}
 		
 		public static function getCurrentMonthBirdays():ArrayCollection{
 			
