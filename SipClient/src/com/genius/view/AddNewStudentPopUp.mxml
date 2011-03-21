@@ -51,6 +51,11 @@
 					return;
 				}
 				var student:Student = new Student();
+				if (chkIdEnter.selected == true) {
+					 student.id = txtStudentId.text;
+				} else {
+					 student.id = lblStudentId.text;
+				}
 				student.firstname = txtFirstName.text;
 				student.lastname = txtLastName.text;
 				student.dob = txtDob.text;
@@ -70,7 +75,56 @@
 				
 				
 			}
+			
+			// Insert a row into the Student table
+			public static function generateStudentId():String
+			{
+				var branchId:String = model.branchId;
+				var date:Date = new Date();
+				var year:String = date.fullYear + "";
+				//var month:String = date.month
+				
+				var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+				var sipDb:SQLConnection = new SQLConnection();
+				sipDb.open(dbFile);
+				
+				var stmt:SQLStatement = new SQLStatement();
+				stmt.sqlConnection = sipDb;
+				
+				stmt.text = "Select count(*) as count from students where enrolldate like '%" + year + "'";
+				//stmt.text = "Select count(*) as count from students";
+				stmt.execute();
+				
+				var count:uint = 0;
+				var data:Array = stmt.getResult().data;
+				if(data!= null && data.length > 0) {
+					count = data.pop().count;
+				}
+				var nextCount:uint = count+1;
+				var prefix:String = "";
+				if(nextCount>9) {
+					if(nextCount < 100) {
+						prefix="0"
+					}
+				} else {
+					prefix="00"
+				}
+				return branchId + year + prefix + nextCount; 
+			}
 		
+			private function toggleIdInput():void{
+				if (chkIdEnter.selected == true) {
+					lblStudentId.includeInLayout = false;
+					txtStudentId.includeInLayout = true;
+					lblStudentId.visible = false;
+					txtStudentId.visible = true;
+				} else {
+					lblStudentId.includeInLayout = true;
+					txtStudentId.includeInLayout = false;
+					lblStudentId.visible = true;
+					txtStudentId.visible = false;
+				}
+			}
 			public function centerWindow():void
 			{
 				PopUpManager.centerPopUp(this);
@@ -91,6 +145,14 @@
 	<s:VGroup width="360" height="387">
 		<s:Group x="106" y="10" width="379" height="366">
 			<mx:Form x="0" y="0">
+				<mx:FormItem label="Student Id:">
+					<s:Label id="lblStudentId" text="{generateStudentId()}"/>
+					<s:TextInput id="txtStudentId" text="{generateStudentId()}" selectAll="true" includeInLayout="false" visible="false"/>
+				</mx:FormItem>
+				<mx:FormItem label="Enter Id manually:">
+					<s:CheckBox id="chkIdEnter" selected="false" click="toggleIdInput()" />
+				</mx:FormItem>
+				
 				<mx:FormItem label="First Name:">
 					<s:TextInput id="txtFirstName"/>
 				</mx:FormItem>
@@ -122,6 +184,7 @@
 				<mx:FormItem label="Contact Number 3 :">
 					<s:TextInput id="txtContact3" restrict="0-9" maxChars="10"/>
 				</mx:FormItem>
+								
 				<mx:FormItem>
 					<s:Button id="addBtn" label="Add Student" height="40" click="onAddBtnClick(event)"/>
 				</mx:FormItem>
