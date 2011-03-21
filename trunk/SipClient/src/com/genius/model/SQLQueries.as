@@ -73,6 +73,9 @@ package com.genius.model
 		public static var S_EXPENSES:String = "select * from expenses";
 		public static var I_NEW_EXPENSE:String = "INSERT into expenses (expensehead, amount, expensedate, remarks) values(?,?,?,?)";
 
+		
+		public static var S_FROM_MONTH_VIEW:String = "SELECT * from month_view where year = ? and level = ?";
+		
 		//public static var U_TEACHER:String = "update teacher set teachername=? where id=?";
 
 		

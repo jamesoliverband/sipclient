@@ -3,6 +3,7 @@ package com.genius.core
 	import com.genius.model.ApplicationModel;
 	import com.genius.model.Batch;
 	import com.genius.model.Course;
+	import com.genius.model.MonthView;
 	import com.genius.model.SQLQueries;
 	import com.genius.model.Student;
 	import com.genius.model.Teacher;
@@ -860,6 +861,24 @@ package com.genius.core
 			return monthVIews;
 		}
 
+		
+		public static function getUpdatedReportView(year:String, level: String) : ArrayCollection {
+			
+			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
+			var sipDb:SQLConnection = new SQLConnection();
+			sipDb.open(dbFile);
+			
+			var stmt:SQLStatement = new SQLStatement();
+			stmt.itemClass = MonthView;
+			stmt.sqlConnection = sipDb;
+			
+			stmt.text = SQLQueries.S_FROM_MONTH_VIEW;
+			stmt.parameters[0] =  year ;
+			stmt.parameters[1] = level;
+			stmt.execute();
+			var monthView:ArrayCollection = new ArrayCollection(stmt.getResult().data);
+			return monthView;
+		}
 		
 
 		

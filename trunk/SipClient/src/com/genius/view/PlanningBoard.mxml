@@ -7,11 +7,11 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import com.genius.core.DataManager;
 			import com.genius.model.ApplicationModel;
 			
 			import mx.collections.ArrayCollection;
 			
-		
 			[Bindable]
 			private static var model:ApplicationModel = ApplicationModel.instance;
 			
@@ -30,23 +30,79 @@
 		{Month:"Nov", plan:4, actual:2, leve1plan:4},
 		{Month:"Dec", plan:5, actual:3, leve1plan:4}
 		]);
+			[Bindable]
+			private var viewList:ArrayCollection;
+				
+			protected function onGoBtnClick(event:MouseEvent):void {
+				viewList = DataManager.getUpdatedReportView(cmbYear.text, cmbLevel.text);
+				
+				
+			}
+			
+			//Returns the list of year to display in year combo box.
+			
+			private function getYearList():ArrayCollection{
+				var yearList:ArrayCollection = new ArrayCollection;
+				var currentTime:Date;
+				currentTime = new Date();
+				var i: int;
+				var year:Number;
+				year = currentTime.fullYear;
+				year = year - 2;
+				for (i=0; i < 5; i++) {
+					yearList.addItem(year++);
+				}
+				return yearList;
+			}
+			
+			private function getLevelList():ArrayCollection {
+				var levelList:ArrayCollection = new ArrayCollection;
+				var i:int;
+				levelList.addItem("All");
+				for (i=0; i < model.courseList.length; i++) {
+					levelList.addItem(model.courseList.getItemAt(i,0));
+				}
+				return levelList;
+			}
+			
 			
 		]]>
+		
+		
+		
 	</fx:Script>
 	
 	<s:layout>
 		<s:VerticalLayout >
 		</s:VerticalLayout>
 	</s:layout>
-	<s:HGroup paddingTop="50">
+	
+	<s:HGroup paddingTop="20" paddingBottom="10" paddingLeft="20" gap="30">
+		<mx:FormItem label="Year:">
+			<mx:ComboBox id="cmbYear"  dataProvider="{getYearList()}" selectedIndex="2" height="35"/> 
+		</mx:FormItem>
+		
+		<mx:FormItem label="Level:">
+			<mx:ComboBox id="cmbLevel" dataProvider="{model.courseList}" labelField="coursename" height="35" /> 
+		</mx:FormItem>
+		
+		<mx:FormItem>
+			<s:Button id="goBtn" label="Go" height="35" click="onGoBtnClick(event)"/>
+		</mx:FormItem>
+		
+	</s:HGroup>
+	
+	
+	<s:HGroup paddingTop="5">
 		<mx:ColumnChart id="myChart" 
-					  dataProvider="{countList}" 
-					  showDataTips="true" width="483" height="150" 
+					  dataProvider="{viewList}" 
+					  showDataTips="true" width="583" height="200" 
 					  >
 			<mx:horizontalAxis>
 				<mx:CategoryAxis 
-					dataProvider="{countList}" 
-					categoryField="Month"
+					dataProvider="{viewList}" 
+					
+					categoryField="month"
 					/>
 			</mx:horizontalAxis>
 			<mx:series>
@@ -76,7 +132,9 @@
 		<mx:Legend dataProvider="{myChart}"/>
 	</s:HGroup>
 	
-	<mx:DataGrid id="dg" dataProvider="{model.monthlyCounts}" width="456" rowCount="10" height="191">
+	
+	
+	<mx:DataGrid id="dg" dataProvider="{model.monthlyCounts}" width="620" rowCount="20" height="300">
 		<mx:columns>
 			<mx:DataGridColumn dataField="month" headerText="Month"/>
 			<mx:DataGridColumn dataField="year" headerText="Year"/>
