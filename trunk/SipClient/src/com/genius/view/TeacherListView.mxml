@@ -13,8 +13,6 @@
 			import com.genius.model.SQLQueries;
 			import com.genius.view.EditTeacherPopUp;
 			
-			import flexunit.framework.Protectable;
-			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.managers.PopUpManager;
