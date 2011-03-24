@@ -4,7 +4,7 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				
-				layout="absolute" width="400" height="500" 
+				layout="absolute" width="600" height="500" 
 				creationComplete="centerWindow()" title="Add Student to Batch" 
 				showCloseButton="true" close="closeWindow()" >
 	
@@ -27,30 +27,25 @@
 			protected var sipDb:SQLConnection;
 			
 			[Bindable]
+			protected var searchFormVisible:Boolean = true;
+			
+			[Bindable]
+			protected var searchResultGroupVisible:Boolean = false;
+
+			[Bindable]
+			protected var addFormVisible:Boolean = false;
+			
+			[Bindable]
 			protected var students:ArrayCollection;
 			
 			[Bindable]
 			protected var eligibleStudents:ArrayCollection;
 			
 			[Bindable]
-			protected var selectedStudents:ArrayCollection;
+			protected var selectedStudent:Student;
 			
 			[Bindable]
 			private static var model:ApplicationModel = ApplicationModel.instance;
-			
-			// Initialize the database and create table
-			protected function initDatabase():void
-			{
-				// Create a file to hold the database
-				var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
-				sipDb = new SQLConnection();
-				sipDb.open(dbFile);
-				
-				selectedStudents = new ArrayCollection();
-				
-			}
-			
-			
 			
 		
 			protected function onSearchBtnClick(event:MouseEvent):void
@@ -60,8 +55,12 @@
 				student.lastname = txtLastName.text;
 				student.level = cmbCourse1.selectedLabel;
 				eligibleStudents = DataManager.searchStudents(student);
+				searchFormVisible = false;
+				searchResultGroupVisible = true;
+				
 			}
 			
+			/*
 			protected function onMoveRightClick(event:MouseEvent):void
 			{
 				var selectedStudentIndex:int = eligibleList.selectedIndex;
@@ -71,23 +70,37 @@
 				selectedStudents.addItem(eligibleStudents.getItemAt(selectedStudentIndex));
 				
 			}
-			
+			*/
 			protected function onAddStudentToBatch(event:MouseEvent):void
 			{
+				
+				selectedStudent = dgEligibleStudents.selectedItem as Student
+					
+				/*
 				if(selectedStudents != null && selectedStudents.length > 0) {
 					for (var a:int=0; a < selectedStudents.length; a++ ) {
 						DataManager.addStudentToBatch(selectedStudents.getItemAt(a).id , model.selectedBatch.id);
 						DataManager.updateStudentCurrentLevel(selectedStudents.getItemAt(a).id, model.selectedBatch.coursename);
 					}
 				}
+				*/
+				
+				searchResultGroupVisible = false;
+				addFormVisible = true;
 				
 			}
 			
 			
-			protected function onMoveLeftClick(event:MouseEvent):void
+			protected function onAddBtnClick(event:MouseEvent):void
 			{
+				addFormVisible = false;
+				searchFormVisible = true;
+				DataManager.addStudentToBatch(selectedStudent.id , model.selectedBatch.id);
+				DataManager.updateStudentCurrentLevel(selectedStudent.id, model.selectedBatch.coursename);
+				
 				
 			}
+			
 			
 			public function centerWindow():void
 			{
@@ -110,7 +123,18 @@
 		
 		<s:HGroup><s:Label text="BatchId" styleName="appFontBold"/><s:Label text="{model.selectedBatch.id}" styleName="appFontNormal"/></s:HGroup>
 		<s:HGroup><s:Label text="Teacher" styleName="appFontBold" /><s:Label text="{model.selectedBatch.teachername}" styleName="appFontNormal"/></s:HGroup>
-		<s:Group x="106" y="10" width="379" height="185">
+		<mx:DataGrid id="dgStudents" dataProvider="{model.selectedBatch.studentList}" width="400" rowCount="5">
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="Student ID"/>
+				<mx:DataGridColumn dataField="firstname" headerText="First Name" />
+				<mx:DataGridColumn dataField="lastname" headerText="Last Name"/>
+				<mx:DataGridColumn dataField="dob" headerText="DOB"/>
+				<mx:DataGridColumn dataField="contactnumber1" headerText="Contact "/>
+			</mx:columns>
+		</mx:DataGrid>
+
+		
+		<s:Group id="searchFormGroup" includeInLayout="{searchFormVisible}" visible="{searchFormVisible}">
 			<s:Label x="10" y="10" text="Search Student" fontFamily="Arial" fontWeight="bold"/>
 			<mx:Form x="0" y="30">
 				<mx:FormItem label="First Name:">
@@ -128,20 +152,34 @@
 				</mx:FormItem>
 			</mx:Form>  	
 		</s:Group>
-		<s:HGroup>
-			<s:List id="eligibleList" dataProvider="{eligibleStudents}" labelField="firstname">
-				
-			</s:List>
-			<s:VGroup>
-				<s:Button label=">>" click="onMoveRightClick(event)"/>
-				<s:Button label="--" click="onMoveLeftClick(event)"/>
-			</s:VGroup>
-			
-			<s:List id="selectedList" dataProvider="{selectedStudents}" labelField="firstname">
-				
-			</s:List>
-		</s:HGroup>
-		<s:Button left="10" label="Add Selected Students" height="40"  click="onAddStudentToBatch(event)"/>
+		<s:VGroup id="searchResultGroup" includeInLayout="{searchResultGroupVisible}" visible="{searchResultGroupVisible}">
+		<mx:DataGrid id="dgEligibleStudents" dataProvider="{eligibleStudents}" width="400" rowCount="5">
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="Student ID"/>
+				<mx:DataGridColumn dataField="firstname" headerText="First Name" />
+				<mx:DataGridColumn dataField="lastname" headerText="Last Name"/>
+				<mx:DataGridColumn dataField="contactnumber1" headerText="Contact "/>
+			</mx:columns>
+		</mx:DataGrid>
+		<s:Button left="10" label="Select Student" height="40"  click="onAddStudentToBatch(event)"/>
+		</s:VGroup>
+		
+		
+		<s:Group id="addFormGroup" includeInLayout="{addFormVisible}" visible="{addFormVisible}">
+			<s:Label x="10" y="10" text="Search Student" fontFamily="Arial" fontWeight="bold"/>
+			<mx:Form x="0" y="30">
+				<mx:FormItem label="Fees:">
+					<s:TextInput id="txtFees"/>
+				</mx:FormItem>
+				<mx:FormItem label="Discount:">
+					<s:TextInput id="txtDiscount"/>
+				</mx:FormItem>
+				<mx:FormItem>
+					<s:Button label="Add to Batch" height="40" click="onAddBtnClick(event)"/>
+				</mx:FormItem>
+			</mx:Form>  	
+		</s:Group>
+
 	
 	</s:VGroup>	
 	
