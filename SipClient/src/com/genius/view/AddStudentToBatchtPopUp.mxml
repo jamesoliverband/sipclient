@@ -17,6 +17,7 @@
 			import com.genius.model.ApplicationModel;
 			import com.genius.model.SQLQueries;
 			import com.genius.model.Student;
+			import com.genius.model.StudentBatch;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -95,8 +96,17 @@
 			{
 				addFormVisible = false;
 				searchFormVisible = true;
-				DataManager.addStudentToBatch(selectedStudent.id , model.selectedBatch.id);
+				var stdBatch:StudentBatch = new StudentBatch();
+				stdBatch.studentid=selectedStudent.id; 
+				stdBatch.batchid = model.selectedBatch.id;
+				stdBatch.fees = 3333;
+				stdBatch.amountpaid = txtFees.text as Number;
+				stdBatch.discount = txtDiscount as Number;
+				DataManager.addStudentToBatch(stdBatch);
 				DataManager.updateStudentCurrentLevel(selectedStudent.id, model.selectedBatch.coursename);
+				
+				model.selectedBatch.studentList = DataManager.getBatchStudentList(model.selectedBatch.id);
+				model.batchList = DataManager.getActiveBatchList();
 				
 				
 			}
@@ -165,10 +175,12 @@
 		</s:VGroup>
 		
 		
-		<s:Group id="addFormGroup" includeInLayout="{addFormVisible}" visible="{addFormVisible}">
-			<s:Label x="10" y="10" text="Search Student" fontFamily="Arial" fontWeight="bold"/>
-			<mx:Form x="0" y="30">
-				<mx:FormItem label="Fees:">
+		<s:VGroup id="addFormGroup" includeInLayout="{addFormVisible}" visible="{addFormVisible}">
+			<s:Label  text="{selectedStudent.id}" fontFamily="Arial" fontWeight="bold"/>
+			<s:Label  text="{selectedStudent.fullName}" fontFamily="Arial" fontWeight="bold"/>
+			<s:Label  text="Add fees details" fontFamily="Arial" fontWeight="bold"/>
+			<mx:Form>
+				<mx:FormItem label="Fees Paid:">
 					<s:TextInput id="txtFees"/>
 				</mx:FormItem>
 				<mx:FormItem label="Discount:">
@@ -178,7 +190,7 @@
 					<s:Button label="Add to Batch" height="40" click="onAddBtnClick(event)"/>
 				</mx:FormItem>
 			</mx:Form>  	
-		</s:Group>
+		</s:VGroup>
 
 	
 	</s:VGroup>	
