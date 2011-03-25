@@ -6,6 +6,7 @@ package com.genius.core
 	import com.genius.model.MonthView;
 	import com.genius.model.SQLQueries;
 	import com.genius.model.Student;
+	import com.genius.model.StudentBatch;
 	import com.genius.model.Teacher;
 	
 	import flash.data.SQLConnection;
@@ -137,7 +138,7 @@ package com.genius.core
 		}
 		
 		// Insert a row into the Student Batch Table
-		public static  function addStudentToBatch(studentid:String, batchid:String):void
+		public static  function addStudentToBatch(stdBatch:StudentBatch):void
 		{
 			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
 			var sipDb:SQLConnection = new SQLConnection();
@@ -147,8 +148,8 @@ package com.genius.core
 			var stmt:SQLStatement = new SQLStatement();
 			stmt.sqlConnection = sipDb;
 			stmt.text = "select * from student_batch where studentid=? and batchid=?"; 
-			stmt.parameters[0] = studentid;
-			stmt.parameters[1] = batchid;
+			stmt.parameters[0] = stdBatch.studentid;
+			stmt.parameters[1] = stdBatch.batchid;
 			stmt.execute();
 			
 
@@ -160,8 +161,13 @@ package com.genius.core
 				stmt.sqlConnection = sipDb;
 				stmt.text = SQLQueries.I_STUDENT_BATCH; 
 				
-				stmt.parameters[0] = studentid;
-				stmt.parameters[1] = batchid;
+				stmt.parameters[0] = stdBatch.studentid;
+				stmt.parameters[1] = stdBatch.batchid;
+				stmt.parameters[2] = stdBatch.fees;
+				stmt.parameters[3] = stdBatch.amountpaid
+				stmt.parameters[4] = stdBatch.discount
+				stmt.parameters[5] = "11/01/11";
+				
 				stmt.execute();
 			}
 			

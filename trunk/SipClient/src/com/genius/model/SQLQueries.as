@@ -32,10 +32,10 @@ package com.genius.model
 		
 
 		
-		public static var C_STD_BATCH:String = "CREATE TABLE IF NOT EXISTS student_batch ( id INTEGER PRIMARY KEY AUTOINCREMENT, studentid TEXT, batchid TEXT)";
+		public static var C_STD_BATCH:String = "CREATE TABLE IF NOT EXISTS student_batch ( id INTEGER PRIMARY KEY AUTOINCREMENT, studentid TEXT, batchid TEXT, fees INTEGER, amountpaid, discount INTEGER, modifieddate TEXT)";
 		public static var S_ALL_BATCH_STUDENTS:String = "select s.id,s.firstname, s.lastname from student inner join student_batch sb on s.id = sb.studentid where sb.batchid = ?"
 		public static var S_ELIGIBLE_STUDENTS_FOR_BATCH:String = "select s.id, s.firstname, s.lastname from student where level = ?";
-		public static var I_STUDENT_BATCH:String = "INSERT into student_batch (studentid,batchid) values(?,?)";
+		public static var I_STUDENT_BATCH:String = "INSERT into student_batch (studentid,batchid, fees, amountpaid, discount, modifieddate) values(?,?,?,?,?,?)";
 		public static var S_BATCH_STUDENT_LIST = "select * from students where id in (select studentid from student_batch where batchid = ? )"; 
 		public static var U_BATCH:String = "update batch set teachername=?, coursename=?, startdate=?, enddate=?, days=? , time =? where id=?";
 		public static var S_BATCH_FOR_ID:String = "SELECT * from batch where id = ?";
