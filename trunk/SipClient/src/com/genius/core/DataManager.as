@@ -722,7 +722,9 @@ package com.genius.core
 			var stmt:SQLStatement = new SQLStatement();
 			//stmt.itemClass = Student;
 			stmt.sqlConnection = sipDb;
-			stmt.text = SQLQueries.S_BATCH_STUDENT_LIST;
+			//stmt.text = SQLQueries.S_BATCH_STUDENT_LIST;
+			stmt.text = SQLQueries.S_ALL_BATCH_STUDENTS;
+			
 			stmt.parameters[0] = batchId;
 			stmt.execute();
 			var activeStudents:ArrayCollection = new ArrayCollection(stmt.getResult().data);
