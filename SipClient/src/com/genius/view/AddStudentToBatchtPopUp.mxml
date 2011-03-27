@@ -4,7 +4,7 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				
-				layout="absolute" width="600" height="500" 
+				layout="absolute" width="500" height="300" 
 				creationComplete="centerWindow()" title="Add Student to Batch" 
 				showCloseButton="true" close="closeWindow()" >
 	
@@ -18,12 +18,14 @@
 			import com.genius.model.SQLQueries;
 			import com.genius.model.Student;
 			import com.genius.model.StudentBatch;
+			import com.genius.view.AddNewStudentToBatchtPopUp;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.CalendarLayoutChangeEvent;
 			import mx.formatters.DateFormatter;
 			import mx.managers.PopUpManager;
+			
 			
 			protected var sipDb:SQLConnection;
 			
@@ -48,7 +50,7 @@
 			[Bindable]
 			private static var model:ApplicationModel = ApplicationModel.instance;
 			
-		
+		/*
 			protected function onSearchBtnClick(event:MouseEvent):void
 			{
 				var student:Student = new Student();
@@ -61,31 +63,10 @@
 				
 			}
 			
-			/*
-			protected function onMoveRightClick(event:MouseEvent):void
-			{
-				var selectedStudentIndex:int = eligibleList.selectedIndex;
-				if(selectedStudents == null ) {
-					selectedStudents = new ArrayCollection();
-				}
-				selectedStudents.addItem(eligibleStudents.getItemAt(selectedStudentIndex));
-				
-			}
-			*/
 			protected function onAddStudentToBatch(event:MouseEvent):void
 			{
 				
 				selectedStudent = dgEligibleStudents.selectedItem as Student
-					
-				/*
-				if(selectedStudents != null && selectedStudents.length > 0) {
-					for (var a:int=0; a < selectedStudents.length; a++ ) {
-						DataManager.addStudentToBatch(selectedStudents.getItemAt(a).id , model.selectedBatch.id);
-						DataManager.updateStudentCurrentLevel(selectedStudents.getItemAt(a).id, model.selectedBatch.coursename);
-					}
-				}
-				*/
-				
 				searchResultGroupVisible = false;
 				addFormVisible = true;
 				
@@ -109,8 +90,11 @@
 				model.batchList = DataManager.getActiveBatchList();
 				
 				
-			}
+			}*/
 			
+			private function onAddNewStudentBtnClick(event:MouseEvent):void {
+				PopUpManager.createPopUp(this, AddNewStudentToBatchtPopUp, true);
+			}	
 			
 			public function centerWindow():void
 			{
@@ -129,11 +113,11 @@
 	<s:layout>
 		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
 	</s:layout>
-	<s:VGroup width="360" height="400">
+	<s:VGroup width="360" height="240">
 		
 		<s:HGroup><s:Label text="BatchId" styleName="appFontBold"/><s:Label text="{model.selectedBatch.id}" styleName="appFontNormal"/></s:HGroup>
 		<s:HGroup><s:Label text="Teacher" styleName="appFontBold" /><s:Label text="{model.selectedBatch.teachername}" styleName="appFontNormal"/></s:HGroup>
-		<mx:DataGrid id="dgStudents" dataProvider="{model.selectedBatch.studentList}" width="400" rowCount="5">
+		<mx:DataGrid id="dgStudents" dataProvider="{model.selectedBatch.studentList}" width="460" rowCount="5">
 			<mx:columns>
 				<mx:DataGridColumn dataField="id" headerText="Student ID"/>
 				<mx:DataGridColumn dataField="firstname" headerText="First Name" />
@@ -142,9 +126,10 @@
 				<mx:DataGridColumn dataField="contactnumber1" headerText="Contact "/>
 			</mx:columns>
 		</mx:DataGrid>
-
 		
-		<s:Group id="searchFormGroup" includeInLayout="{searchFormVisible}" visible="{searchFormVisible}">
+		<s:Button label="Add New Student" height="40" click="onAddNewStudentBtnClick(event)"/>
+		
+		<!--<s:Group id="searchFormGroup" includeInLayout="{searchFormVisible}" visible="{searchFormVisible}">
 			<s:Label x="10" y="10" text="Search Student" fontFamily="Arial" fontWeight="bold"/>
 			<mx:Form x="0" y="30">
 				<mx:FormItem label="First Name:">
@@ -192,7 +177,7 @@
 			</mx:Form>  	
 		</s:VGroup>
 
-	
+	-->
 	</s:VGroup>	
 	
 </s:Group>

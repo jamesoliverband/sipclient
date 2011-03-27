@@ -66,12 +66,6 @@
 			
 			protected function onMarkCompleteClick(event:MouseEvent):void
 			{
-				//deleteStudent(dg.selectedItem as Student);
-				//Alert.show("Edit Click - To Do" + dg.selectedItem.id + "" + dg.selectedItem.coursename);
-				//txtTeacherName.text = dg.selectedItem.teachername;
-				//txtTeacherId.text = dg.selectedItem.id;
-				//btnAddTeacher.label = "Save"
-				//DataManager.updateCourse(id, coursename)
 				DataManager.markBatchComplete(dg.selectedItem.id);
 				model.batchList = DataManager.getActiveBatchList();
 			}
@@ -79,7 +73,6 @@
 			protected function onAddStudentClick(event:MouseEvent):void {
 				model.selectedBatch = DataManager.getBatch(dg.selectedItem.id);
 				model.selectedBatch.studentList = DataManager.getBatchStudentList(dg.selectedItem.id);
-				//TODO: Open AddStudentToBatchPopup.
 				PopUpManager.createPopUp(this, AddStudentToBatchtPopUp, false);
 			}
 			
