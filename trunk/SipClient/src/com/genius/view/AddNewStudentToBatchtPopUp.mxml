@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+				xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				
+				layout="absolute" width="500" height="450" 
+				creationComplete="centerWindow()" title="Search and Add New Student to Batch" 
+				showCloseButton="true" close="closeWindow()" >
+	
+	<fx:Metadata>
+		[Event(name="studentAdded", type="flash.events.Event")]
+	</fx:Metadata>
+	
+<s:Group >
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.Student;
+			
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var searchFormVisible:Boolean = true;
+			
+			[Bindable]
+			protected var searchResultGroupVisible:Boolean = false;
+
+			[Bindable]
+			protected var addFormVisible:Boolean = false;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+			
+			[Bindable]
+			protected var eligibleStudents:ArrayCollection;
+			
+			[Bindable]
+			public var selectedStudent:Student = null;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			private var addFeesDetailsPopUp:AddFeesDetailsPopUp;
+		
+			protected function onSearchBtnClick(event:MouseEvent):void
+			{
+				var student:Student = new Student();
+				student.firstname = txtFirstName.text;
+				student.lastname = txtLastName.text;
+				student.level = cmbCourse1.selectedLabel;
+				eligibleStudents = DataManager.searchStudents(student);
+				searchFormVisible = false;
+				searchResultGroupVisible = true;
+				
+			}
+			
+			protected function onSelectStudent(event:MouseEvent):void
+			{
+				selectedStudent = dgEligibleStudents.selectedItem as Student;
+				addFeesDetailsPopUp = AddFeesDetailsPopUp(PopUpManager.createPopUp(this, AddFeesDetailsPopUp, true));
+				addFeesDetailsPopUp["addBtn"].addEventListener("click", closeMeAndNotifyParent); 
+				addFeesDetailsPopUp.mainApp = this;
+			}
+			
+			private function closeMeAndNotifyParent(event:MouseEvent):void
+			{
+				closeWindow();
+				dispatchEvent(new Event("studentAdded"));
+			}
+			
+			
+			public function centerWindow():void
+			{
+				PopUpManager.centerPopUp(this);
+			}
+			
+			public function closeWindow():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+	
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<s:VGroup width="360" height="380">
+	
+		<s:Group id="searchFormGroup">
+			<s:Label x="10" y="10" text="Search Student" fontFamily="Calbri" fontWeight="bold"/>
+			<mx:Form x="0" y="30">
+				<mx:FormItem label="First Name:">
+					<s:TextInput id="txtFirstName"/>
+				</mx:FormItem>
+				<mx:FormItem label="Last Name:">
+					<s:TextInput id="txtLastName"/>
+				</mx:FormItem>
+				<mx:FormItem label="Level:">
+					<mx:ComboBox id="cmbCourse1"  dataProvider="{model.courseList}" labelField="coursename" > 
+					</mx:ComboBox>
+				</mx:FormItem>
+				<mx:FormItem>
+					<s:Button label="Search" height="40" click="onSearchBtnClick(event)"/>
+				</mx:FormItem>
+			</mx:Form>  	
+		</s:Group>
+		<s:VGroup id="searchResultGroup" >
+		<mx:DataGrid id="dgEligibleStudents" dataProvider="{eligibleStudents}" width="400" rowCount="5">
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="Student ID"/>
+				<mx:DataGridColumn dataField="firstname" headerText="First Name" />
+				<mx:DataGridColumn dataField="lastname" headerText="Last Name"/>
+				<mx:DataGridColumn dataField="contactnumber1" headerText="Contact "/>
+			</mx:columns>
+		</mx:DataGrid>
+		<s:Button left="10" label="Select Student" height="40"  click="onSelectStudent(event)" enabled="{dgEligibleStudents.selectedIndex > -1}"/>
+		</s:VGroup>
+	</s:VGroup>	
+	
+</s:Group>
+</mx:TitleWindow>

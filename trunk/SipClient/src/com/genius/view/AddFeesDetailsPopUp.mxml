@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+				xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				
+				layout="absolute" width="300" height="250" 
+				creationComplete="centerWindow()" title="Add Fees Details" 
+				showCloseButton="true" close="closeWindow()" >
+	
+<s:Group >
+	<fx:Script>
+		<![CDATA[
+			import com.genius.core.DataManager;
+			import com.genius.model.ApplicationModel;
+			import com.genius.model.SQLQueries;
+			import com.genius.model.Student;
+			import com.genius.model.StudentBatch;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.formatters.DateFormatter;
+			import mx.managers.PopUpManager;
+			
+			protected var sipDb:SQLConnection;
+			
+			[Bindable]
+			protected var searchFormVisible:Boolean = true;
+			
+			[Bindable]
+			protected var searchResultGroupVisible:Boolean = false;
+
+			[Bindable]
+			protected var addFormVisible:Boolean = false;
+			
+			[Bindable]
+			protected var students:ArrayCollection;
+			
+			[Bindable]
+			protected var eligibleStudents:ArrayCollection;
+			
+			[Bindable]
+			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+		
+			[Bindable]
+			public var mainApp:AddNewStudentToBatchtPopUp = null;  
+			
+			protected function onAddBtnClick(event:MouseEvent):void
+			{
+				var stdBatch:StudentBatch = new StudentBatch();
+				stdBatch.studentid= mainApp.selectedStudent.id; 
+				stdBatch.batchid = model.selectedBatch.id;
+				stdBatch.fees = 3333;
+				stdBatch.amountpaid = parseInt(txtFees.text) as Number;
+				stdBatch.discount = parseInt(txtDiscount.text) as Number;
+				DataManager.addStudentToBatch(stdBatch);
+				DataManager.updateStudentCurrentLevel(mainApp.selectedStudent.id, model.selectedBatch.coursename);
+				
+				model.selectedBatch.studentList = DataManager.getBatchStudentList(model.selectedBatch.id);
+				model.batchList = DataManager.getActiveBatchList();
+				closeWindow();
+				
+			}
+			
+			
+			public function centerWindow():void
+			{
+				PopUpManager.centerPopUp(this);
+			}
+			
+			public function closeWindow():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+	
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+	</s:layout>
+	<s:VGroup width="260" height="180">
+	
+		<s:VGroup id="addFormGroup">
+			<s:HGroup><s:Label x="5" width="100" text="Student ID" styleName="appFontBold"/><s:Label text="{mainApp.selectedStudent.id}" styleName="appFontBold" /></s:HGroup>
+			<s:HGroup><s:Label x="5" width="100" text="Name" styleName="appFontBold"/><s:Label text="{mainApp.selectedStudent.fullName}" styleName="appFontNormal" /></s:HGroup>
+				<mx:Form>
+				<mx:FormItem label="Fees Paid:">
+					<s:TextInput id="txtFees" text="0" restrict="0-9" maxChars="4"/>
+				</mx:FormItem>
+				<mx:FormItem label="Discount:">
+					<s:TextInput id="txtDiscount" text="0" restrict="0-9" maxChars="4"/>
+				</mx:FormItem>
+				<mx:FormItem>
+					<s:Button id="addBtn" label="Add to Batch" height="40" click="onAddBtnClick(event)"/>
+				</mx:FormItem>
+			</mx:Form>  	
+		</s:VGroup>
+
+	
+	</s:VGroup>	
+	
+</s:Group>
+</mx:TitleWindow>

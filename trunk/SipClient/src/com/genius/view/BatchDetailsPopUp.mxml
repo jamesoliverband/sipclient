@@ -11,6 +11,7 @@
 <s:Group >
 	<fx:Script>
 		<![CDATA[
+			import com.genius.core.DataManager;
 			import com.genius.model.ApplicationModel;
 			
 			import flash.utils.ByteArray;
@@ -18,22 +19,22 @@
 			import mx.collections.ArrayCollection;
 			import mx.managers.PopUpManager;
 			
+			import org.alivepdf.colors.RGBColor;
+			import org.alivepdf.data.Grid;
+			import org.alivepdf.data.GridColumn;
 			import org.alivepdf.fonts.CoreFont;
 			import org.alivepdf.fonts.FontFamily;
 			import org.alivepdf.fonts.IFont;
+			import org.alivepdf.layout.Align;
 			import org.alivepdf.layout.Mode;
 			import org.alivepdf.layout.Orientation;
 			import org.alivepdf.layout.Position;
 			import org.alivepdf.layout.Resize;
-			import org.alivepdf.layout.Align;
 			import org.alivepdf.layout.Size;
 			import org.alivepdf.layout.Unit;
 			import org.alivepdf.pages.Page;
 			import org.alivepdf.pdf.PDF;
-			import org.alivepdf.data.Grid;
-			import org.alivepdf.data.GridColumn;
 			import org.alivepdf.saving.Method;
-			import org.alivepdf.colors.RGBColor;
 			
 			protected var sipDb:SQLConnection;
 			
@@ -45,6 +46,8 @@
 			
 			[Bindable]
 			private static var model:ApplicationModel = ApplicationModel.instance;
+			
+			private var addNewStudentToBatchtPopUp:AddNewStudentToBatchtPopUp;
 			
 			// Initialize the database and create table
 			protected function initDatabase():void
@@ -105,6 +108,16 @@
 				f.writeBytes(bytes);
 				f.close();
 			}
+			
+			private function addStudent():void {
+				addNewStudentToBatchtPopUp = AddNewStudentToBatchtPopUp(PopUpManager.createPopUp(this, AddNewStudentToBatchtPopUp, true));
+				addNewStudentToBatchtPopUp.addEventListener("studentAdded", refreshStudentList);
+				
+			}
+			
+			private function refreshStudentList(event:Event):void {
+				model.selectedBatch.studentList = DataManager.getBatchStudentList(model.selectedBatch.id);
+			}
 			public function centerWindow():void
 			{
 				PopUpManager.centerPopUp(this);
@@ -141,7 +154,10 @@
 				<mx:DataGridColumn dataField="contactnumber1" headerText="Contact "/>
 			</mx:columns>
 		</mx:DataGrid>
-		<s:Button x="20"  label="Generate PDF" height="40" width="110" click="generatePDF()" />
+		<s:HGroup x="20" gap="20">
+			<s:Button  label="Generate PDF" height="40" width="110" click="generatePDF()" />
+			<s:Button  label="Add Student" height="40" width="110" click="addStudent()" />
+		</s:HGroup>
 	</s:VGroup>
 </s:Group>
 </mx:TitleWindow>
