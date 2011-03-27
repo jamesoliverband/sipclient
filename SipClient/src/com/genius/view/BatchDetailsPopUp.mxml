@@ -4,7 +4,7 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				
-				layout="absolute" width="450" height="500" 
+				layout="absolute" width="450" height="550" 
 				creationComplete="centerWindow()" title="Batch Details" 
 				showCloseButton="true" close="closeWindow()" >
 	
@@ -13,10 +13,32 @@
 		<![CDATA[
 			import com.genius.model.ApplicationModel;
 			
+			import flash.utils.ByteArray;
+			
 			import mx.collections.ArrayCollection;
 			import mx.managers.PopUpManager;
 			
+			import org.alivepdf.fonts.CoreFont;
+			import org.alivepdf.fonts.FontFamily;
+			import org.alivepdf.fonts.IFont;
+			import org.alivepdf.layout.Mode;
+			import org.alivepdf.layout.Orientation;
+			import org.alivepdf.layout.Position;
+			import org.alivepdf.layout.Resize;
+			import org.alivepdf.layout.Align;
+			import org.alivepdf.layout.Size;
+			import org.alivepdf.layout.Unit;
+			import org.alivepdf.pages.Page;
+			import org.alivepdf.pdf.PDF;
+			import org.alivepdf.data.Grid;
+			import org.alivepdf.data.GridColumn;
+			import org.alivepdf.saving.Method;
+			import org.alivepdf.colors.RGBColor;
+			
 			protected var sipDb:SQLConnection;
+			
+			private var file:File;
+			private var b:ByteArray = new ByteArray();
 			
 			[Bindable]
 			protected var students:ArrayCollection;
@@ -34,6 +56,55 @@
 				
 			}
 			
+			public function generatePDF():void {
+				var p:PDF = new PDF( Orientation.PORTRAIT, Unit.MM, Size.A4 );
+				p.addPage();
+				var uf:IFont = new CoreFont ( FontFamily.ARIAL );
+								
+				//p.addImage(this);
+								
+				var str:String = new String(); 
+				
+				str = 	"<b> Batch Id 	: </b>" + model.selectedBatch.id + "<br/>" +
+						"<b> Teacher 	: </b>" + model.selectedBatch.teachername + "<br/>" +
+						"<b> Days 		: </b>" + model.selectedBatch.days + "<br/>" +
+						"<b> Time 		: </b>" + model.selectedBatch.time + "<br/>" +
+						"<b> Start Date : </b>" + model.selectedBatch.startdate + "<br/>" +
+						"<b> End Date	: </b>" + model.selectedBatch.enddate + "<br/>" +
+						"<b> Level 		: </b>" + model.selectedBatch.coursename + "<br/>";
+					
+				p.writeFlashHtmlText(8, str);
+				
+				
+				p.textStyle( new RGBColor(0x990000), 1 );
+				p.setFont(uf, 9);
+				
+				// create columns to specify the column order
+				var gridColumnStudentId:GridColumn = new GridColumn("Student Id", "id", 30, Align.LEFT, Align.LEFT);
+				var gridColumnFirstName:GridColumn = new GridColumn("First Name", "firstname", 40, Align.LEFT, Align.LEFT);
+				var gridColumnLastName:GridColumn = new GridColumn("Last Name", "lastname", 40, Align.LEFT, Align.LEFT);
+				var gridColumnDob:GridColumn = new GridColumn("Birth Date", "dob", 45, Align.LEFT, Align.LEFT);
+				var gridColumnContact:GridColumn = new GridColumn("Contact", "contactnumber1", 45, Align.LEFT, Align.LEFT);
+				
+				// create a columns Array
+				// it determines the order shown in the PDF
+				var columns:Array = new Array ( gridColumnStudentId, gridColumnFirstName, gridColumnLastName, gridColumnDob, gridColumnContact );
+				
+				// create a Grid object as usual
+				var grid:Grid = new Grid( model.selectedBatch.studentList.toArray(), 200, 120, new RGBColor ( 0xCCCCCC ), new RGBColor (0xCCCCCC), true, new RGBColor(0x887711), .1, null, columns );
+				
+				// pass the columns
+				//grid.columns = columns;
+				
+				p.addGrid( grid );
+				
+				var f:FileStream = new FileStream();
+				file = File.desktopDirectory.resolvePath("exported.pdf");
+				f.open( file, FileMode.WRITE);
+				var bytes:ByteArray = p.save( Method.LOCAL );
+				f.writeBytes(bytes);
+				f.close();
+			}
 			public function centerWindow():void
 			{
 				PopUpManager.centerPopUp(this);
@@ -70,6 +141,7 @@
 				<mx:DataGridColumn dataField="contactnumber1" headerText="Contact "/>
 			</mx:columns>
 		</mx:DataGrid>
+		<s:Button x="20"  label="Generate PDF" height="40" width="110" click="generatePDF()" />
 	</s:VGroup>
 </s:Group>
 </mx:TitleWindow>
