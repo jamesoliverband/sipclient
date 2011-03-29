@@ -5,7 +5,7 @@ package com.genius.model
 	{
 		public var id:String;
 		public var coursename:String="";
-		public var description:String="";;
-				
+		public var fees:Number=1600;
+		public var description:String="";
 	}
 }

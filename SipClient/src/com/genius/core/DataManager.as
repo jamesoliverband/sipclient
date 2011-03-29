@@ -30,60 +30,84 @@ package com.genius.core
 			if(dbFile != null && createNew ) {
 				trace("Path" + dbFile.nativePath)
 				dbFile.deleteFile();
+			
+				var sipDb:SQLConnection = new SQLConnection();
+				// Creates the dataabase with the specified file above
+				sipDb.open(dbFile);
+				
+				var stmt:SQLStatement = new SQLStatement();
+				stmt.sqlConnection = sipDb;
+				// Create a table to map to our Students value object
+				stmt.text = SQLQueries.C_STUDENT;
+				
+				
+				stmt.execute();
+				
+				var stmtC:SQLStatement = new SQLStatement();
+				stmtC.sqlConnection = sipDb;
+				// Create a table to map to our Students value object
+				stmtC.text = SQLQueries.C_COURSE;
+				stmtC.execute();
+				
+				stmtC = new SQLStatement();
+				stmtC.sqlConnection = sipDb;
+				// Create a table to map to our Students value object
+				stmtC.text = SQLQueries.C_TEACHER;
+				stmtC.execute();
+				
+				stmtC = new SQLStatement();
+				stmtC.sqlConnection = sipDb;
+				// Create a table to map to our Students value object
+				stmtC.text = SQLQueries.C_BATCH;
+				stmtC.execute();
+				
+				
+				stmtC = new SQLStatement();
+				stmtC.sqlConnection = sipDb;
+				// Create a table to map to our Students value object
+				stmtC.text = SQLQueries.C_STD_BATCH;
+				stmtC.execute();
+				
+				stmtC = new SQLStatement();
+				stmtC.sqlConnection = sipDb;
+				// Create a table to map to our Students value object
+				stmtC.text = SQLQueries.C_MONTH_VIEW;
+				stmtC.execute();
+				//createOneYearPlan("JAN","2011",0,0);
+				
+				stmtC = new SQLStatement();
+				stmtC.sqlConnection = sipDb;
+				// Create a table to map to our Students value object
+				stmtC.text = SQLQueries.C_EXPENSES;
+				stmtC.execute();
+				
+				
+				createCourseData();
 			}
-			var sipDb:SQLConnection = new SQLConnection();
-			// Creates the dataabase with the specified file above
-			sipDb.open(dbFile);
-			
-			var stmt:SQLStatement = new SQLStatement();
-			stmt.sqlConnection = sipDb;
-			// Create a table to map to our Students value object
-			stmt.text = SQLQueries.C_STUDENT;
-			
-			
-			stmt.execute();
-			
-			var stmtC:SQLStatement = new SQLStatement();
-			stmtC.sqlConnection = sipDb;
-			// Create a table to map to our Students value object
-			stmtC.text = SQLQueries.C_COURSE;
-			stmtC.execute();
-			
-			stmtC = new SQLStatement();
-			stmtC.sqlConnection = sipDb;
-			// Create a table to map to our Students value object
-			stmtC.text = SQLQueries.C_TEACHER;
-			stmtC.execute();
-			
-			stmtC = new SQLStatement();
-			stmtC.sqlConnection = sipDb;
-			// Create a table to map to our Students value object
-			stmtC.text = SQLQueries.C_BATCH;
-			stmtC.execute();
-			
-			
-			stmtC = new SQLStatement();
-			stmtC.sqlConnection = sipDb;
-			// Create a table to map to our Students value object
-			stmtC.text = SQLQueries.C_STD_BATCH;
-			stmtC.execute();
-			
-			stmtC = new SQLStatement();
-			stmtC.sqlConnection = sipDb;
-			// Create a table to map to our Students value object
-			stmtC.text = SQLQueries.C_MONTH_VIEW;
-			stmtC.execute();
-			//createOneYearPlan("JAN","2011",0,0);
-			
-			stmtC = new SQLStatement();
-			stmtC.sqlConnection = sipDb;
-			// Create a table to map to our Students value object
-			stmtC.text = SQLQueries.C_EXPENSES;
-			stmtC.execute();
 			
 			
 		}
-		
+
+		public static function createCourseData():void {
+			addNewCourse(getCourse("00","AMAL",2000,"AMAL"));
+			addNewCourse(getCourse("01","Level 1",2300,"Level 1"));
+			addNewCourse(getCourse("02","Level 2",2000,"Level 2"));
+			addNewCourse(getCourse("03","Level 3",2000,"Level 3"));
+			addNewCourse(getCourse("04","Level 4",2000,"Level 4"));
+			addNewCourse(getCourse("05","Adv. Level 1",2000,"Adv. Level 1"));
+			addNewCourse(getCourse("06","Adv. Level 2",2000,"Adv. Level 2"));
+			addNewCourse(getCourse("07","Adv. Level 3",2000,"Adv. Level 3"));
+			addNewCourse(getCourse("08","Adv. Level 4",2000,"Adv. Level 4"));
+		}
+
+		public static function getCourse(id:String,name:String,fees:Number, desc:String):Course {
+			var c:Course = new Course();
+			c.coursename = name;
+			c.fees = fees;
+			c.description=desc;
+			c.id = id;
+			return c;
+		}
 		
 		// Insert a row into the Student table
 		public static  function addStudent(student:Student):String

@@ -50,7 +50,7 @@ package com.genius.model
 		public static var S_MONTH_COUNTS:String = "select month, year, level, plan, actual from month_view";
 		
 		
-		public static var C_COURSE:String = "CREATE TABLE IF NOT EXISTS course ( id TEXT PRIMARY KEY, coursename TEXT, description TEXT)";
+		public static var C_COURSE:String = "CREATE TABLE IF NOT EXISTS course ( id TEXT PRIMARY KEY, coursename TEXT, fees FLOAT, description TEXT)";
 		public static var S_ALL_COURSES:String = "select * from course order by id";
 		public static var S_COURSE:String = "select * from course where id=?";
 		public static var I_NEW_COURSES:String = "INSERT into course (id, coursename, description) values(?,?,?)";
@@ -67,6 +67,8 @@ package com.genius.model
 		public static var C_STD_FEES:String = "CREATE TABLE IF NOT EXISTS student_fees ( id INTEGER PRIMARY KEY AUTOINCREMENT, studentid Text, cousename Text, amount FLOAT, discount FLOAT, paymentdate TEXT, remarks Text)";
 		public static var S_STD_FEES:String = "select * from student_fees where studentid=?";
 		public static var I_STD_FEES:String = "INSERT into student_fees (studentid, coursename, amount, discount, paymentdate) values(?,?,?,?,?)";
+		
+		
 		
 
 		public static var C_EXPENSES:String = "CREATE TABLE IF NOT EXISTS expenses ( id INTEGER PRIMARY KEY AUTOINCREMENT, expensehead Text, amount FLOAT,  expensedate TEXT, remarks Text)";
