@@ -93,9 +93,13 @@
 				if (chkIdEnter.selected == true) {
 					txtStudentId.includeInLayout = true;
 					txtStudentId.visible = true;
+					stdLableFormField.visible = true;
+					stdLableFormField.includeInLayout = true;
 				} else {
 					txtStudentId.includeInLayout = false;
 					txtStudentId.visible = false;
+					stdLableFormField.visible = false;
+					stdLableFormField.includeInLayout = false;
 				}
 			}
 			public function centerWindow():void
@@ -124,7 +128,7 @@
 				</mx:FormItem>
 
 				<mx:FormItem label="Student Id:" id="stdLableFormField" includeInLayout="false" visible="false" >
-					<s:TextInput id="txtStudentId" text="" selectAll="true" restrict="0-9" maxChars="9"/>
+					<s:TextInput id="txtStudentId" text="" selectAll="true" restrict="0-9" maxChars="9" includeInLayout="false" visible="false"/>
 				</mx:FormItem>
 				
 				<mx:FormItem label="First Name* :">
