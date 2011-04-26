@@ -14,6 +14,7 @@ package com.genius.core
 	import flash.filesystem.File;
 	
 	import mx.collections.ArrayCollection;
+	import mx.controls.Alert;
 
 	public class DataManager
 	{
@@ -27,9 +28,11 @@ package com.genius.core
 		public static  function createDatabase(createNew:Boolean):void {
 			// Create a file to hold the database
 			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
-			if(dbFile != null && createNew ) {
+			//dbFile.deleteFile();
+			Alert.show("DBFILE - " + dbFile.nativePath );
+			if(!dbFile.exists || dbFile == null || createNew ) {
 				trace("Path" + dbFile.nativePath)
-				dbFile.deleteFile();
+				//dbFile.deleteFile();
 			
 				var sipDb:SQLConnection = new SQLConnection();
 				// Creates the dataabase with the specified file above
