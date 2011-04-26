@@ -29,7 +29,7 @@ package com.genius.core
 			// Create a file to hold the database
 			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
 			//dbFile.deleteFile();
-			Alert.show("DBFILE - " + dbFile.nativePath );
+			//Alert.show("DBFILE - " + dbFile.nativePath );
 			if(!dbFile.exists || dbFile == null || createNew ) {
 				trace("Path" + dbFile.nativePath)
 				//dbFile.deleteFile();
@@ -165,7 +165,7 @@ package com.genius.core
 			
 			var stmt:SQLStatement = new SQLStatement();
 			stmt.sqlConnection = sipDb;
-			
+			model.courseList
 			stmt.text = "Select count(*) as count from students where enrolldate like '%" + year + "'";
 			//stmt.text = "Select count(*) as count from students";
 			stmt.execute();
@@ -309,9 +309,6 @@ package com.genius.core
 		protected static function generateBatchId(batch:Batch):String
 		{
 			var branchId:String = model.branchId;
-			var date:Date = new Date();
-			var year:String = date.fullYear + "";
-			//var month:String = date.month
 			
 			var dbFile:File = File.applicationStorageDirectory.resolvePath("sipdb.db");
 			var sipDb:SQLConnection = new SQLConnection();
@@ -320,7 +317,11 @@ package com.genius.core
 			var stmt:SQLStatement = new SQLStatement();
 			stmt.sqlConnection = sipDb;
 			
-			var matchingId:String = branchId + batch.startdate.substr(6,4);
+			var courseId:String = model.getCourseIdFromName(batch.coursename);
+			
+			var matchingId:String = branchId + courseId + batch.startdate.substr(8,2);
+			
+			
 			
 			//stmt.text = "Select count(*) as count from students where enrolldate like '%" + year + "'";
 			stmt.text = "Select count(*) as count from batch where id like '" + matchingId + "%'";
@@ -340,7 +341,7 @@ package com.genius.core
 			} else {
 				prefix="00"
 			}
-			return branchId + year + prefix + nextCount; 
+			return matchingId + prefix + nextCount; 
 		}
 		
 		
