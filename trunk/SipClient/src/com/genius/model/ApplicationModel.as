@@ -45,17 +45,34 @@ package com.genius.model
 		public var monthlyCounts:ArrayCollection;
 		public var branchId:String = "1904";
 		
-		
-		
-		
-		
-		
 		public var currentStudent:Student;
 		public var selectedBatch:Batch;
 		public var selectedTeacher:Teacher;
 		public var selectedCourse:Course;
 		
-		
+		public function getCourseIdFromName(courseName:String):String {
+			var idString:String = "";
+			for(var i:int=0; i<courseList.length; i++ ) {
+				var o:Object = courseList.getItemAt(i);
+				if(o.coursename==courseName) {
+					idString=o.id;
+					break;
+				}
+			}
+			return idString;
+		}
+
+		public function getCourseNameFromId(courseId:String):String {
+			var name:String = "";
+			for(var i:int=0; i<courseList.length; i++ ) {
+				var o:Object = courseList.getItemAt(i);
+				if(o.id==courseId) {
+					name=o.coursename;
+					break;
+				}
+			}
+			return name;
+		}
 		
 
 	}
